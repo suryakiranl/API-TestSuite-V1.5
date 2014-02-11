@@ -4,7 +4,7 @@
   <groupId>edu.cmu.sv</groupId>
   <artifactId>API-TestSuite-V1.5</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>API-TestSuite-V1.5</name>
   <url>http://maven.apache.org</url>
   
