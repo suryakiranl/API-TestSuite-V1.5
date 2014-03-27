@@ -32,28 +32,17 @@ public class APIHelper {
 	 */
 	public static final String GET_ALL_DEVICE_TYPES = HOST_NAME
 			+ "/getAllDeviceTypes";
+	
+	/**
+	 * URL used for GET operation on API to get all "Sensor Types"
+	 */
+	public static final String GET_ALL_SENSOR_TYPES = HOST_NAME + "/getAllSensorTypes";
 
 	/**
 	 * Supported result types
 	 */
 	public static enum ResultType {
 		JSON, CSV
-	}
-
-	public static String processGetAllDevices(ResultType type)
-			throws HttpException, IOException {
-		String url = (type == null) ? GET_ALL_DEVICES : GET_ALL_DEVICES + "/"
-				+ type.toString().toLowerCase();
-
-		return invokeHttpGet(url);
-	}
-
-	public static String processGetAllDeviceTypes(ResultType type)
-			throws HttpException, IOException {
-		String url = (type == null) ? GET_ALL_DEVICE_TYPES
-				: GET_ALL_DEVICE_TYPES + "/" + type.toString().toLowerCase();
-
-		return invokeHttpGet(url);
 	}
 
 	/**
@@ -83,5 +72,29 @@ public class APIHelper {
 		}
 
 		return response;
+	}
+	
+	public static String processGetAllDevices(ResultType type)
+			throws HttpException, IOException {
+		String url = (type == null) ? GET_ALL_DEVICES : GET_ALL_DEVICES + "/"
+				+ type.toString().toLowerCase();
+
+		return invokeHttpGet(url);
+	}
+
+	public static String processGetAllDeviceTypes(ResultType type)
+			throws HttpException, IOException {
+		String url = (type == null) ? GET_ALL_DEVICE_TYPES
+				: GET_ALL_DEVICE_TYPES + "/" + type.toString().toLowerCase();
+
+		return invokeHttpGet(url);
+	}
+	
+	public static String processGetAllSensorTypes(ResultType type)
+			throws HttpException, IOException {
+		String url = (type == null) ? GET_ALL_SENSOR_TYPES
+				: GET_ALL_SENSOR_TYPES + "/" + type.toString().toLowerCase();
+
+		return invokeHttpGet(url);
 	}
 }
