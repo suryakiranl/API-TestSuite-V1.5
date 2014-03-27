@@ -14,7 +14,7 @@ public final class Logger {
 	private static final Logger logger;
 	
 	static {
-		LOG = org.apache.log4j.Logger.getLogger("");
+		LOG = org.apache.log4j.Logger.getLogger("edu.cmu.sv");
 		logger = new Logger();
 	}
 
@@ -91,7 +91,11 @@ public final class Logger {
 	 */
 	public void enter(Object... obj) {
 		if (LOG.isTraceEnabled()) {
-			LOG.trace(getLogPrefix() + " > Inside method. Params[ " + obj.toString() + " ]");
+			LOG.trace(getLogPrefix() + " > Inside method.");
+			int index = 1;
+			for(Object o : obj) {
+				LOG.trace("\t Param " + (index++) + " : "  + o);
+			}
 		}
 	}
 
@@ -102,7 +106,11 @@ public final class Logger {
 	 */
 	public void exit(Object... obj) {
 		if (LOG.isTraceEnabled()) {
-			LOG.trace(getLogPrefix() + " > Exiting method. Params[ " + obj.toString() + " ]");
+			LOG.trace(getLogPrefix() + " > Exiting method.");
+			int index = 1;
+			for(Object o : obj) {
+				LOG.trace("\t Param " + (index++) + " : "  + o);
+			}
 		}
 	}
 
