@@ -5,12 +5,15 @@ import java.util.Date;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.Timeout;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import edu.cmu.sv.sdsp.utils.Constants;
 import edu.cmu.sv.sdsp.utils.Logger;
 
 /**
@@ -23,6 +26,12 @@ import edu.cmu.sv.sdsp.utils.Logger;
 public class BaseTest {
 	private static final Logger log = Logger.get();
 	private Date testStart, testEnd;
+	
+	/**
+	 *  Add a rule that all JUnit test cases run for a maximum of 2 minutes.
+	 */
+	@Rule
+	public Timeout testCaseTimeOut = new Timeout(Constants.JUNIT_TIMEOUT);
 	
 	/**
 	 * This method is called before every test case is run.
