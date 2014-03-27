@@ -3,15 +3,12 @@ package edu.cmu.sv.sdsp.api;
 import java.io.IOException;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import edu.cmu.sv.sdsp.api.helper.APIHelper;
 import edu.cmu.sv.sdsp.api.helper.APIHelper.ResultType;
-import edu.cmu.sv.sdsp.utils.Constants;
 import edu.cmu.sv.sdsp.utils.Logger;
 
 /**
@@ -23,16 +20,11 @@ import edu.cmu.sv.sdsp.utils.Logger;
 @RunWith(JUnit4.class)
 public class APIUnitTest extends BaseTest {
 	private static final Logger log = Logger.get();
-	/**
-	 *  Add a rule that all JUnit test cases run for a maximum of 2 minutes.
-	 */
-	@Rule
-	public Timeout testCaseTimeOut = new Timeout(Constants.JUNIT_TIMEOUT);
 	
 	@Test
 	public void testGetAllDevices() {
 		try {
-			String resp = APIHelper.processGetAllDevices(null);
+			String resp = APIHelper.getAllDevices(null);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -43,7 +35,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllDevicesCSV() {
 		try {
-			String resp = APIHelper.processGetAllDevices(ResultType.CSV);
+			String resp = APIHelper.getAllDevices(ResultType.CSV);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -54,7 +46,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllDevicesJSON() {
 		try {
-			String resp = APIHelper.processGetAllDevices(ResultType.JSON);
+			String resp = APIHelper.getAllDevices(ResultType.JSON);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -65,7 +57,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllDeviceTypes() {
 		try {
-			String resp = APIHelper.processGetAllDeviceTypes(null);
+			String resp = APIHelper.getAllDeviceTypes(null);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -76,7 +68,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllDeviceTypesCSV() {
 		try {
-			String resp = APIHelper.processGetAllDeviceTypes(ResultType.CSV);
+			String resp = APIHelper.getAllDeviceTypes(ResultType.CSV);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -87,7 +79,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllDeviceTypesJSON() {
 		try {
-			String resp = APIHelper.processGetAllDeviceTypes(ResultType.JSON);
+			String resp = APIHelper.getAllDeviceTypes(ResultType.JSON);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -98,7 +90,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllSensorTypes() {
 		try {
-			String resp = APIHelper.processGetAllSensorTypes(null);
+			String resp = APIHelper.getAllSensorTypes(null);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -109,7 +101,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllSensorTypesCSV() {
 		try {
-			String resp = APIHelper.processGetAllSensorTypes(ResultType.CSV);
+			String resp = APIHelper.getAllSensorTypes(ResultType.CSV);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -120,7 +112,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllSensorTypesJSON() {
 		try {
-			String resp = APIHelper.processGetAllSensorTypes(ResultType.JSON);
+			String resp = APIHelper.getAllSensorTypes(ResultType.JSON);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -131,7 +123,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllSensors() {
 		try {
-			String resp = APIHelper.processGetAllSensors(null);
+			String resp = APIHelper.getAllSensors(null);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -142,7 +134,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllSensorsCSV() {
 		try {
-			String resp = APIHelper.processGetAllSensors(ResultType.CSV);
+			String resp = APIHelper.getAllSensors(ResultType.CSV);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -153,7 +145,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllSensorsJSON() {
 		try {
-			String resp = APIHelper.processGetAllSensors(ResultType.JSON);
+			String resp = APIHelper.getAllSensors(ResultType.JSON);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -164,7 +156,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllSensorCategories() {
 		try {
-			String resp = APIHelper.processGetAllSensorCategories(null);
+			String resp = APIHelper.getAllSensorCategories(null);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -175,7 +167,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllSensorCategoriesCSV() {
 		try {
-			String resp = APIHelper.processGetAllSensorCategories(ResultType.CSV);
+			String resp = APIHelper.getAllSensorCategories(ResultType.CSV);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
@@ -186,7 +178,7 @@ public class APIUnitTest extends BaseTest {
 	@Test
 	public void testGetAllSensorCategoriesJSON() {
 		try {
-			String resp = APIHelper.processGetAllSensorCategories(ResultType.JSON);
+			String resp = APIHelper.getAllSensorCategories(ResultType.JSON);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
