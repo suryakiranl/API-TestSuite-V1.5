@@ -128,4 +128,36 @@ public class APIUnitTest extends BaseTest {
 		}
 	}
 	
+	@Test
+	public void testGetAllSensors() {
+		try {
+			String resp = APIHelper.processGetAllSensors(null);
+			assertReponseNotNull(resp);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void testGetAllSensorsCSV() {
+		try {
+			String resp = APIHelper.processGetAllSensors(ResultType.CSV);
+			assertReponseNotNull(resp);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void testGetAllSensorsJSON() {
+		try {
+			String resp = APIHelper.processGetAllSensors(ResultType.JSON);
+			assertReponseNotNull(resp);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
 }

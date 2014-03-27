@@ -37,6 +37,11 @@ public class APIHelper {
 	 * URL used for GET operation on API to get all "Sensor Types"
 	 */
 	public static final String GET_ALL_SENSOR_TYPES = HOST_NAME + "/getAllSensorTypes";
+	
+	/**
+	 * URL used for GET operation on API to get all "Sensors"
+	 */
+	public static final String GET_ALL_SENSORS = HOST_NAME + "/getAllSensors";
 
 	/**
 	 * Supported result types
@@ -94,6 +99,14 @@ public class APIHelper {
 			throws HttpException, IOException {
 		String url = (type == null) ? GET_ALL_SENSOR_TYPES
 				: GET_ALL_SENSOR_TYPES + "/" + type.toString().toLowerCase();
+
+		return invokeHttpGet(url);
+	}
+	
+	public static String processGetAllSensors(ResultType type)
+			throws HttpException, IOException {
+		String url = (type == null) ? GET_ALL_SENSORS : GET_ALL_SENSORS + "/"
+				+ type.toString().toLowerCase();
 
 		return invokeHttpGet(url);
 	}
