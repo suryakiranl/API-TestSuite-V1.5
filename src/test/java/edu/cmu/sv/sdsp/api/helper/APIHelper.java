@@ -23,9 +23,15 @@ public class APIHelper {
 	public static final String HOST_NAME = "http://einstein.sv.cmu.edu:9000";
 
 	/**
-	 * URL used for GET operation on API to get Devices
+	 * URL used for GET operation on API to get all "Devices"
 	 */
 	public static final String GET_ALL_DEVICES = HOST_NAME + "/getAllDevices";
+
+	/**
+	 * URL used for GET operation on API to get all "Device Types"
+	 */
+	public static final String GET_ALL_DEVICE_TYPES = HOST_NAME
+			+ "/getAllDeviceTypes";
 
 	/**
 	 * Supported result types
@@ -38,6 +44,14 @@ public class APIHelper {
 			throws HttpException, IOException {
 		String url = (type == null) ? GET_ALL_DEVICES : GET_ALL_DEVICES + "/"
 				+ type.toString().toLowerCase();
+
+		return invokeHttpGet(url);
+	}
+
+	public static String processGetAllDeviceTypes(ResultType type)
+			throws HttpException, IOException {
+		String url = (type == null) ? GET_ALL_DEVICE_TYPES
+				: GET_ALL_DEVICE_TYPES + "/" + type.toString().toLowerCase();
 
 		return invokeHttpGet(url);
 	}

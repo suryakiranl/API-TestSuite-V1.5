@@ -61,4 +61,38 @@ public class APIUnitTest extends BaseTest {
 			Assert.fail();
 		}
 	}
+	
+	@Test
+	public void testGetAllDeviceTypes() {
+		try {
+			String resp = APIHelper.processGetAllDeviceTypes(null);
+			assertReponseNotNull(resp);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void testGetAllDeviceTypesCSV() {
+		try {
+			String resp = APIHelper.processGetAllDeviceTypes(ResultType.CSV);
+			assertReponseNotNull(resp);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void testGetAllDeviceTypesJSON() {
+		try {
+			String resp = APIHelper.processGetAllDeviceTypes(ResultType.JSON);
+			assertReponseNotNull(resp);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
 }
