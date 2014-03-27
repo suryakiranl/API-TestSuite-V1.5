@@ -10,6 +10,23 @@ package edu.cmu.sv.sdsp.utils;
  *
  */
 public class Constants {
-	// Time out for any HTTP connections
+	/**
+	 *  Time out for any HTTP connections
+	 */
 	public static final int CONNECTION_TIMEOUT = 30000;
+	
+	/**
+	 * Time out for JUnit test cases
+	 */
+	public static final int JUNIT_TIMEOUT = 120 * 1000; // 2 minutes
+	
+	/**
+	 *  CSV format
+	 */
+	public static final String CSV = "csv";
+	
+	/**
+	 *  JSON format
+	 */
+	public static final String JSON = "json";
 }
