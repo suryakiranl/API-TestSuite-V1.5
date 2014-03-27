@@ -2,6 +2,7 @@ package edu.cmu.sv.sdsp.api;
 
 import java.io.IOException;
 
+import org.apache.commons.httpclient.HttpException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,20 +24,48 @@ public class APIIntegrationTest extends BaseTest {
 
 	@Test
 	public void addAndRemoveSensorCategory() {
-		SensorCategory sc = new SensorCategory("JUnit-Test-SC",
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC1",
 				"For Integration Testing");
 		try {
-			String resp = APIHelper.addSensorCategory(sc);
-			Assert.assertTrue("Response should contain the word success",
-					resp.contains("Sensor category saved"));
-
-			resp = APIHelper.deleteSensorCategory(sc);
-			Assert.assertTrue(
-					"Response should contain the word 'Sensor category is deleted'",
-					resp.contains("Sensor category is deleted"));
+			addSensorCategory(sc);
+			deleteSensorCategory(sc);
 		} catch (IOException e) {
 			log.error(e);
 			Assert.fail();
 		}
+	}
+
+	@Test
+	public void addAndRemoveSensorType() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC2",
+					"For Integration Testing");
+			addSensorCategory(sc);
+			
+			
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+
+	private String addSensorCategory(SensorCategory sc) throws HttpException,
+			IOException {
+		String resp = APIHelper.addSensorCategory(sc);
+		Assert.assertTrue("Response should contain the word success",
+				resp.contains("Sensor category saved"));
+
+		return resp;
+	}
+
+	private String deleteSensorCategory(SensorCategory sc)
+			throws HttpException, IOException {
+		String resp = APIHelper.deleteSensorCategory(sc);
+		Assert.assertTrue(
+				"Response should contain the word 'Sensor category is deleted'",
+				resp.contains("Sensor category is deleted"));
+
+		return resp;
 	}
 }
