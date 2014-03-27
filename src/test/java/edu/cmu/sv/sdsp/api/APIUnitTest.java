@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import edu.cmu.sv.sdsp.api.helper.APIHelper;
+import edu.cmu.sv.sdsp.api.helper.APIHelper.ResultType;
 import edu.cmu.sv.sdsp.utils.Constants;
 import edu.cmu.sv.sdsp.utils.Logger;
 
@@ -32,6 +33,28 @@ public class APIUnitTest extends BaseTest {
 	public void testGetAllDevices() {
 		try {
 			String resp = APIHelper.processGetAllDevices(null);
+			assertReponseNotNull(resp);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void testGetAllDevicesCSV() {
+		try {
+			String resp = APIHelper.processGetAllDevices(ResultType.CSV);
+			assertReponseNotNull(resp);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void testGetAllDevicesJSON() {
+		try {
+			String resp = APIHelper.processGetAllDevices(ResultType.JSON);
 			assertReponseNotNull(resp);
 		} catch (IOException e) {
 			log.error(e);
