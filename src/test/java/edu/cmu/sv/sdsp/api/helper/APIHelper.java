@@ -4,6 +4,9 @@ import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpException;
 
+import com.google.gson.Gson;
+
+import edu.cmu.sv.sdsp.api.json.SensorCategory;
 import edu.cmu.sv.sdsp.utils.HttpHelper;
 import edu.cmu.sv.sdsp.utils.Logger;
 
@@ -16,6 +19,17 @@ import edu.cmu.sv.sdsp.utils.Logger;
  */
 public class APIHelper {
 	private static final Logger log = Logger.get();
+
+	/**
+	 * Supported result types
+	 */
+	public static enum ResultType {
+		JSON, CSV
+	}
+
+	private static enum RequestType {
+		GET, POST, DELETE
+	}
 
 	/**
 	 * This is the host this project tests on.
@@ -51,79 +65,110 @@ public class APIHelper {
 			+ "/getAllSensorCategories";
 
 	/**
-	 * Supported result types
+	 * URL to add a "Sensor Category" using POST
 	 */
-	public static enum ResultType {
-		JSON, CSV
-	}
+	public static final String ADD_SENSOR_CATEGORY = HOST_NAME
+			+ "/addSensorCategory";
+	
+	/**
+	 * URI to delete a "Sensor Category" using DELETE
+	 */
+	public static final String DELETE_SENSOR_CATEGORY = HOST_NAME + "/deleteSensorCategory";
 
 	/**
-	 * Utility function to invoke the HTTP GET operation.
+	 * Utility function to invoke a HTTP operation.
 	 * 
+	 * @param type
+	 *            - Is it a GET request or POST request
 	 * @param url
-	 *            - URL to request for.
+	 *            - URL to invoke
+	 * @param content
+	 *            - Content to send for a POST request. Note that this is not
+	 *            used for GET or DELETE requests.
 	 * 
-	 * @return - Response from server.
+	 * @return - Response from server
 	 * 
 	 * @throws HttpException
 	 * @throws IOException
 	 */
-	private static final String invokeHttpGet(String url) throws HttpException,
-			IOException {
+	private static final String invokeHttpOperation(RequestType type,
+			String url, String content) throws HttpException, IOException {
 		log.trace("Invoking a GET request for URL: " + url);
 
 		String response = null;
 		try {
-			response = HttpHelper.performHttpGet(url);
-		} finally {
-			if (response != null && response.length() > 200) {
-				response = response.substring(0, 200)
-						+ " <<< String truncated to 200 chars";
+			switch (type) {
+			case GET: response = HttpHelper.performHttpGet(url); break;
+			case POST: response = HttpHelper.performHttpPost(url, content); break;
+			case DELETE: response = HttpHelper.performHttpDelete(url); break;
 			}
-			log.trace("Response String: " + response);
+		} finally {
+			logResponse(response);
 		}
 
 		return response;
 	}
 
-	public static String processGetAllDevices(ResultType type)
-			throws HttpException, IOException {
+	private static void logResponse(String response) {
+		if (response != null && response.length() > 200) {
+			response = response.substring(0, 200)
+					+ " <<< String truncated to 200 chars";
+		}
+		log.trace("Response String: " + response);
+	}
+
+	public static String getAllDevices(ResultType type) throws HttpException,
+			IOException {
 		String url = (type == null) ? GET_ALL_DEVICES : GET_ALL_DEVICES + "/"
 				+ type.toString().toLowerCase();
 
-		return invokeHttpGet(url);
+		return invokeHttpOperation(RequestType.GET, url, null);
 	}
 
-	public static String processGetAllDeviceTypes(ResultType type)
+	public static String getAllDeviceTypes(ResultType type)
 			throws HttpException, IOException {
 		String url = (type == null) ? GET_ALL_DEVICE_TYPES
 				: GET_ALL_DEVICE_TYPES + "/" + type.toString().toLowerCase();
 
-		return invokeHttpGet(url);
+		return invokeHttpOperation(RequestType.GET, url, null);
 	}
 
-	public static String processGetAllSensorTypes(ResultType type)
+	public static String getAllSensorTypes(ResultType type)
 			throws HttpException, IOException {
 		String url = (type == null) ? GET_ALL_SENSOR_TYPES
 				: GET_ALL_SENSOR_TYPES + "/" + type.toString().toLowerCase();
 
-		return invokeHttpGet(url);
+		return invokeHttpOperation(RequestType.GET, url, null);
 	}
 
-	public static String processGetAllSensors(ResultType type)
-			throws HttpException, IOException {
+	public static String getAllSensors(ResultType type) throws HttpException,
+			IOException {
 		String url = (type == null) ? GET_ALL_SENSORS : GET_ALL_SENSORS + "/"
 				+ type.toString().toLowerCase();
 
-		return invokeHttpGet(url);
+		return invokeHttpOperation(RequestType.GET, url, null);
 	}
 
-	public static String processGetAllSensorCategories(ResultType type)
+	public static String getAllSensorCategories(ResultType type)
 			throws HttpException, IOException {
 		String url = (type == null) ? GET_ALL_SENSOR_CATEGORIES
 				: GET_ALL_SENSOR_CATEGORIES + "/"
 						+ type.toString().toLowerCase();
 
-		return invokeHttpGet(url);
+		return invokeHttpOperation(RequestType.GET, url, null);
+	}
+
+	public static String addSensorCategory(SensorCategory sc)
+			throws HttpException, IOException {
+		Gson gson = new Gson();
+		String json = gson.toJson(sc);
+
+		return invokeHttpOperation(RequestType.POST, ADD_SENSOR_CATEGORY, json);
+	}
+	
+	public static String deleteSensorCategory(SensorCategory sc) throws HttpException, IOException {
+		String url = DELETE_SENSOR_CATEGORY + "/" + sc.getSensorCategoryName();
+		
+		return invokeHttpOperation(RequestType.DELETE, url, null);
 	}
 }
