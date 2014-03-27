@@ -6,6 +6,7 @@ import org.apache.commons.httpclient.HttpException;
 
 import com.google.gson.Gson;
 
+import edu.cmu.sv.sdsp.api.json.Sensor;
 import edu.cmu.sv.sdsp.api.json.SensorCategory;
 import edu.cmu.sv.sdsp.api.json.SensorType;
 import edu.cmu.sv.sdsp.utils.HttpHelper;
@@ -86,6 +87,16 @@ public class APIHelper {
 	 * URI to delete a "Sensor Type" using DELETE
 	 */
 	public static final String DELETE_SENSOR_TYPE = HOST_NAME + "/deleteSensorType";
+	
+	/**
+	 * URI to add a "Sensor" using POST
+	 */
+	public static final String ADD_SENSOR = HOST_NAME + "/addSensor";
+	
+	/**
+	 * URI to delete a "Sensor" using DELETE
+	 */
+	public static final String DELETE_SENSOR = HOST_NAME + "/deleteSensor";
 
 	/**
 	 * Utility function to invoke a HTTP operation.
@@ -105,7 +116,7 @@ public class APIHelper {
 	 */
 	private static final String invokeHttpOperation(RequestType type,
 			String url, String content) throws HttpException, IOException {
-		log.trace("Invoking a GET request for URL: " + url);
+		log.trace("Invoking a " + type + " request for URL: " + url);
 
 		String response = null;
 		try {
@@ -202,6 +213,21 @@ public class APIHelper {
 	public static String deleteSensorType(SensorType st)
 			throws HttpException, IOException {
 		String url = DELETE_SENSOR_TYPE + "/" + st.getSensorTypeName();
+
+		return invokeHttpOperation(RequestType.DELETE, url, null);
+	}
+	
+	public static String addSensor(Sensor s)
+			throws HttpException, IOException {
+		Gson gson = new Gson();
+		String json = gson.toJson(s);
+
+		return invokeHttpOperation(RequestType.POST, ADD_SENSOR, json);
+	}
+
+	public static String deleteSensor(Sensor s)
+			throws HttpException, IOException {
+		String url = DELETE_SENSOR + "/" + s.getSensorName();
 
 		return invokeHttpOperation(RequestType.DELETE, url, null);
 	}
