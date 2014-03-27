@@ -29,4 +29,14 @@ public class Constants {
 	 *  JSON format
 	 */
 	public static final String JSON = "json";
+	
+	/**
+	 * UTF-8
+	 */
+	public static final String CHARSET_UTF8 = "UTF-8";
+	
+	/**
+	 * Use plain text for character encoding
+	 */
+	public static final String CONTENT_TYPE_JSON = "application/json";
 }
