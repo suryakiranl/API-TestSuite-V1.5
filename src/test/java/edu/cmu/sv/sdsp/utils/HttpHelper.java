@@ -29,7 +29,7 @@ public class HttpHelper {
 	 * @throws HttpException
 	 * @throws IOException
 	 */
-	public String performHttpGet(String urlStr) throws HttpException, IOException {
+	public static String performHttpGet(String urlStr) throws HttpException, IOException {
 		log.enter(urlStr);
 		
 		HttpClient client = new HttpClient();
@@ -47,7 +47,12 @@ public class HttpHelper {
 			get.releaseConnection();
 		}
 		
-		log.exit(response);
+		if(response == null || response.length() <= 200) {
+			log.exit(response);
+		} else {
+			log.exit(response.substring(0, 199) + " << Truncated");
+		}
+		
 		return response;
 	}
 }
