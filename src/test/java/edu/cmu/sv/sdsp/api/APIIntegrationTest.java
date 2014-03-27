@@ -10,6 +10,7 @@ import org.junit.runners.JUnit4;
 
 import edu.cmu.sv.sdsp.api.helper.APIHelper;
 import edu.cmu.sv.sdsp.api.json.SensorCategory;
+import edu.cmu.sv.sdsp.api.json.SensorType;
 import edu.cmu.sv.sdsp.utils.Logger;
 
 /**
@@ -40,9 +41,12 @@ public class APIIntegrationTest extends BaseTest {
 		try {
 			SensorCategory sc = new SensorCategory("JUnit-Test-SC2",
 					"For Integration Testing");
+			SensorType st = new SensorType("JUnit-Test-ST1",
+					sc.getSensorCategoryName());
+			
 			addSensorCategory(sc);
-			
-			
+			addSensorType(st);
+			deleteSensorType(st);
 			deleteSensorCategory(sc);
 		} catch (IOException e) {
 			log.error(e);
@@ -50,10 +54,31 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 
+	private String addSensorType(SensorType st) throws HttpException,
+			IOException {
+		String resp = APIHelper.addSensorType(st);
+		Assert.assertTrue(
+				"Response should contain the word 'Sensor type saved'",
+				resp.contains("Sensor type saved"));
+
+		return resp;
+	}
+
+	private String deleteSensorType(SensorType st) throws HttpException,
+			IOException {
+		String resp = APIHelper.deleteSensorType(st);
+		Assert.assertTrue(
+				"Response should contain the word 'Sensor type deleted'",
+				resp.contains("Sensor type deleted"));
+
+		return resp;
+	}
+
 	private String addSensorCategory(SensorCategory sc) throws HttpException,
 			IOException {
 		String resp = APIHelper.addSensorCategory(sc);
-		Assert.assertTrue("Response should contain the word success",
+		Assert.assertTrue(
+				"Response should contain the word 'Sensor category saved'",
 				resp.contains("Sensor category saved"));
 
 		return resp;

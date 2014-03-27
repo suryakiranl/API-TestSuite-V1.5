@@ -7,6 +7,7 @@ import org.apache.commons.httpclient.HttpException;
 import com.google.gson.Gson;
 
 import edu.cmu.sv.sdsp.api.json.SensorCategory;
+import edu.cmu.sv.sdsp.api.json.SensorType;
 import edu.cmu.sv.sdsp.utils.HttpHelper;
 import edu.cmu.sv.sdsp.utils.Logger;
 
@@ -69,11 +70,22 @@ public class APIHelper {
 	 */
 	public static final String ADD_SENSOR_CATEGORY = HOST_NAME
 			+ "/addSensorCategory";
-	
+
 	/**
 	 * URI to delete a "Sensor Category" using DELETE
 	 */
-	public static final String DELETE_SENSOR_CATEGORY = HOST_NAME + "/deleteSensorCategory";
+	public static final String DELETE_SENSOR_CATEGORY = HOST_NAME
+			+ "/deleteSensorCategory";
+	
+	/**
+	 * URI to add a "Sensor Type" using POST
+	 */
+	public static final String ADD_SENSOR_TYPE = HOST_NAME + "/addSensorType";
+	
+	/**
+	 * URI to delete a "Sensor Type" using DELETE
+	 */
+	public static final String DELETE_SENSOR_TYPE = HOST_NAME + "/deleteSensorType";
 
 	/**
 	 * Utility function to invoke a HTTP operation.
@@ -98,9 +110,15 @@ public class APIHelper {
 		String response = null;
 		try {
 			switch (type) {
-			case GET: response = HttpHelper.performHttpGet(url); break;
-			case POST: response = HttpHelper.performHttpPost(url, content); break;
-			case DELETE: response = HttpHelper.performHttpDelete(url); break;
+			case GET:
+				response = HttpHelper.performHttpGet(url);
+				break;
+			case POST:
+				response = HttpHelper.performHttpPost(url, content);
+				break;
+			case DELETE:
+				response = HttpHelper.performHttpDelete(url);
+				break;
 			}
 		} finally {
 			logResponse(response);
@@ -165,10 +183,26 @@ public class APIHelper {
 
 		return invokeHttpOperation(RequestType.POST, ADD_SENSOR_CATEGORY, json);
 	}
-	
-	public static String deleteSensorCategory(SensorCategory sc) throws HttpException, IOException {
+
+	public static String deleteSensorCategory(SensorCategory sc)
+			throws HttpException, IOException {
 		String url = DELETE_SENSOR_CATEGORY + "/" + sc.getSensorCategoryName();
-		
+
+		return invokeHttpOperation(RequestType.DELETE, url, null);
+	}
+	
+	public static String addSensorType(SensorType st)
+			throws HttpException, IOException {
+		Gson gson = new Gson();
+		String json = gson.toJson(st);
+
+		return invokeHttpOperation(RequestType.POST, ADD_SENSOR_TYPE, json);
+	}
+
+	public static String deleteSensorType(SensorType st)
+			throws HttpException, IOException {
+		String url = DELETE_SENSOR_TYPE + "/" + st.getSensorTypeName();
+
 		return invokeHttpOperation(RequestType.DELETE, url, null);
 	}
 }
