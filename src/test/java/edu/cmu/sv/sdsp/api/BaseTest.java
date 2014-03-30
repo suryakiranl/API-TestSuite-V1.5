@@ -1,5 +1,6 @@
 package edu.cmu.sv.sdsp.api;
 
+import java.io.IOException;
 import java.util.Date;
 
 import org.junit.After;
@@ -106,5 +107,10 @@ public class BaseTest {
 		}
 		
 		return response;
+	}
+	
+	protected void processException(IOException e) {
+		log.error(e);
+		Assert.fail();
 	}
 }

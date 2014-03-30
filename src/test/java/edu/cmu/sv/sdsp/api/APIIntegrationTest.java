@@ -18,7 +18,6 @@ import edu.cmu.sv.sdsp.api.json.Location;
 import edu.cmu.sv.sdsp.api.json.Sensor;
 import edu.cmu.sv.sdsp.api.json.SensorCategory;
 import edu.cmu.sv.sdsp.api.json.SensorType;
-import edu.cmu.sv.sdsp.utils.Logger;
 
 /**
  * Class to perform integration tests on the API to verify it.
@@ -28,13 +27,6 @@ import edu.cmu.sv.sdsp.utils.Logger;
  */
 @RunWith(JUnit4.class)
 public class APIIntegrationTest extends BaseTest {
-	private static final Logger log = Logger.get();
-
-	private void processException(IOException e) {
-		log.error(e);
-		Assert.fail();
-	}
-
 	@Test
 	public void addAndRemoveSensorCategory() {
 		SensorCategory sc = new SensorCategory("JUnit-Test-SC1",
@@ -354,7 +346,7 @@ public class APIIntegrationTest extends BaseTest {
 				deleteSensorType(st5);
 				deleteSensorType(st4);
 				deleteSensorCategory(sc);
-			} catch(IOException e) {
+			} catch (IOException e) {
 				processException(e);
 			}
 		}
@@ -368,11 +360,14 @@ public class APIIntegrationTest extends BaseTest {
 			addSensorCategory(sc);
 
 			getSensorCategory(sc, null);
-
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
@@ -384,11 +379,14 @@ public class APIIntegrationTest extends BaseTest {
 			addSensorCategory(sc);
 
 			getSensorCategory(sc, ResultType.CSV);
-
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
@@ -400,193 +398,208 @@ public class APIIntegrationTest extends BaseTest {
 			addSensorCategory(sc);
 
 			getSensorCategory(sc, ResultType.JSON);
-
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getSensorType() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC14",
+				"For Integration Testing");
+		SensorType st = new SensorType("JUnit-Test-ST15",
+				sc.getSensorCategoryName());
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC14",
-					"For Integration Testing");
-			SensorType st = new SensorType("JUnit-Test-ST15",
-					sc.getSensorCategoryName());
-
 			addSensorCategory(sc);
 			addSensorType(st);
 
 			getSensorType(st, null);
-
-			// Clean up
-			deleteSensorType(st);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteSensorType(st);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getSensorTypeCSV() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC15",
+				"For Integration Testing");
+		SensorType st = new SensorType("JUnit-Test-ST16",
+				sc.getSensorCategoryName());
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC15",
-					"For Integration Testing");
-			SensorType st = new SensorType("JUnit-Test-ST16",
-					sc.getSensorCategoryName());
-
 			addSensorCategory(sc);
 			addSensorType(st);
 
 			getSensorType(st, ResultType.CSV);
-
-			// Clean up
-			deleteSensorType(st);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteSensorType(st);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getSensorTypeJSON() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC16",
+				"For Integration Testing");
+		SensorType st = new SensorType("JUnit-Test-ST17",
+				sc.getSensorCategoryName());
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC16",
-					"For Integration Testing");
-			SensorType st = new SensorType("JUnit-Test-ST17",
-					sc.getSensorCategoryName());
-
 			addSensorCategory(sc);
 			addSensorType(st);
 
 			getSensorType(st, ResultType.JSON);
-
-			// Clean up
-			deleteSensorType(st);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteSensorType(st);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getDeviceType() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC18",
-					"For Integration Testing");
-			SensorType st1 = new SensorType("JUnit-Test-ST19",
-					sc.getSensorCategoryName());
-			SensorType st2 = new SensorType("JUnit-Test-ST20",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st1.getSensorTypeName());
-			sensorTypeNames.add(st2.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT7", sensorTypeNames);
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC18",
+				"For Integration Testing");
+		SensorType st1 = new SensorType("JUnit-Test-ST19",
+				sc.getSensorCategoryName());
+		SensorType st2 = new SensorType("JUnit-Test-ST20",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st1.getSensorTypeName());
+		sensorTypeNames.add(st2.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT7", sensorTypeNames);
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st1);
 			addSensorType(st2);
 			addDeviceType(dt);
 
 			getDeviceType(dt, null);
-
-			// Clean up
-			deleteDeviceType(dt);
-			deleteSensorType(st2);
-			deleteSensorType(st1);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDeviceType(dt);
+				deleteSensorType(st2);
+				deleteSensorType(st1);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getDeviceTypeCSV() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC19",
+				"For Integration Testing");
+		SensorType st1 = new SensorType("JUnit-Test-ST21",
+				sc.getSensorCategoryName());
+		SensorType st2 = new SensorType("JUnit-Test-ST22",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st1.getSensorTypeName());
+		sensorTypeNames.add(st2.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT8", sensorTypeNames);
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC19",
-					"For Integration Testing");
-			SensorType st1 = new SensorType("JUnit-Test-ST21",
-					sc.getSensorCategoryName());
-			SensorType st2 = new SensorType("JUnit-Test-ST22",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st1.getSensorTypeName());
-			sensorTypeNames.add(st2.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT8", sensorTypeNames);
-
 			addSensorCategory(sc);
 			addSensorType(st1);
 			addSensorType(st2);
 			addDeviceType(dt);
 
 			getDeviceType(dt, ResultType.CSV);
-
-			// Clean up
-			deleteDeviceType(dt);
-			deleteSensorType(st2);
-			deleteSensorType(st1);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDeviceType(dt);
+				deleteSensorType(st2);
+				deleteSensorType(st1);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getDeviceTypeJSON() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC20",
-					"For Integration Testing");
-			SensorType st1 = new SensorType("JUnit-Test-ST23",
-					sc.getSensorCategoryName());
-			SensorType st2 = new SensorType("JUnit-Test-ST24",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st1.getSensorTypeName());
-			sensorTypeNames.add(st2.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT9", sensorTypeNames);
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC20",
+				"For Integration Testing");
+		SensorType st1 = new SensorType("JUnit-Test-ST23",
+				sc.getSensorCategoryName());
+		SensorType st2 = new SensorType("JUnit-Test-ST24",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st1.getSensorTypeName());
+		sensorTypeNames.add(st2.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT9", sensorTypeNames);
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st1);
 			addSensorType(st2);
 			addDeviceType(dt);
 
 			getDeviceType(dt, ResultType.CSV);
-
-			// Clean up
-			deleteDeviceType(dt);
-			deleteSensorType(st2);
-			deleteSensorType(st1);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDeviceType(dt);
+				deleteSensorType(st2);
+				deleteSensorType(st1);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getDevice() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC21",
+				"For Integration Testing");
+		SensorType st4 = new SensorType("JUnit-Test-ST25",
+				sc.getSensorCategoryName());
+		SensorType st5 = new SensorType("JUnit-Test-ST26",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st4.getSensorTypeName());
+		sensorTypeNames.add(st5.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT10", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location6");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device5", l);
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC21",
-					"For Integration Testing");
-			SensorType st4 = new SensorType("JUnit-Test-ST25",
-					sc.getSensorCategoryName());
-			SensorType st5 = new SensorType("JUnit-Test-ST26",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st4.getSensorTypeName());
-			sensorTypeNames.add(st5.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT10", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location6");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device5",
-					l);
-
 			addSensorCategory(sc);
 			addSensorType(st4);
 			addSensorType(st5);
@@ -594,36 +607,37 @@ public class APIIntegrationTest extends BaseTest {
 			addDevice(d);
 
 			getDevice(d, null);
-
-			// Clean up
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(st5);
-			deleteSensorType(st4);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(st5);
+				deleteSensorType(st4);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getDeviceCSV() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC22",
+				"For Integration Testing");
+		SensorType st4 = new SensorType("JUnit-Test-ST27",
+				sc.getSensorCategoryName());
+		SensorType st5 = new SensorType("JUnit-Test-ST28",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st4.getSensorTypeName());
+		sensorTypeNames.add(st5.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT11", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location7");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device6", l);
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC22",
-					"For Integration Testing");
-			SensorType st4 = new SensorType("JUnit-Test-ST27",
-					sc.getSensorCategoryName());
-			SensorType st5 = new SensorType("JUnit-Test-ST28",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st4.getSensorTypeName());
-			sensorTypeNames.add(st5.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT11", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location7");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device6",
-					l);
-
 			addSensorCategory(sc);
 			addSensorType(st4);
 			addSensorType(st5);
@@ -631,36 +645,38 @@ public class APIIntegrationTest extends BaseTest {
 			addDevice(d);
 
 			getDevice(d, ResultType.CSV);
-
-			// Clean up
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(st5);
-			deleteSensorType(st4);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(st5);
+				deleteSensorType(st4);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getDeviceJSON() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC23",
-					"For Integration Testing");
-			SensorType st4 = new SensorType("JUnit-Test-ST29",
-					sc.getSensorCategoryName());
-			SensorType st5 = new SensorType("JUnit-Test-ST30",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st4.getSensorTypeName());
-			sensorTypeNames.add(st5.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT12", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location8");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device7",
-					l);
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC23",
+				"For Integration Testing");
+		SensorType st4 = new SensorType("JUnit-Test-ST29",
+				sc.getSensorCategoryName());
+		SensorType st5 = new SensorType("JUnit-Test-ST30",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st4.getSensorTypeName());
+		sensorTypeNames.add(st5.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT12", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location8");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device7", l);
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st4);
 			addSensorType(st5);
@@ -668,38 +684,40 @@ public class APIIntegrationTest extends BaseTest {
 			addDevice(d);
 
 			getDevice(d, ResultType.JSON);
-
-			// Clean up
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(st5);
-			deleteSensorType(st4);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(st5);
+				deleteSensorType(st4);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getSensor() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC24",
-					"For Integration Testing");
-			SensorType st6 = new SensorType("JUnit-Test-ST31",
-					sc.getSensorCategoryName());
-			SensorType st7 = new SensorType("JUnit-Test-ST32",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st6.getSensorTypeName());
-			sensorTypeNames.add(st7.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT13", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location9");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device8",
-					l);
-			Sensor s = new Sensor("JUnit-Test-Sensor3",
-					st6.getSensorTypeName(), d.getUri());
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC24",
+				"For Integration Testing");
+		SensorType st6 = new SensorType("JUnit-Test-ST31",
+				sc.getSensorCategoryName());
+		SensorType st7 = new SensorType("JUnit-Test-ST32",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st6.getSensorTypeName());
+		sensorTypeNames.add(st7.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT13", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location9");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device8", l);
+		Sensor s = new Sensor("JUnit-Test-Sensor3", st6.getSensorTypeName(),
+				d.getUri());
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st6);
 			addSensorType(st7);
@@ -708,39 +726,41 @@ public class APIIntegrationTest extends BaseTest {
 			addSensor(s);
 
 			getSensor(s, null);
-
-			// Clean up
-			deleteSensor(s);
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(st7);
-			deleteSensorType(st6);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteSensor(s);
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(st7);
+				deleteSensorType(st6);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getSensorCSV() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC25",
-					"For Integration Testing");
-			SensorType st6 = new SensorType("JUnit-Test-ST33",
-					sc.getSensorCategoryName());
-			SensorType st7 = new SensorType("JUnit-Test-ST34",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st6.getSensorTypeName());
-			sensorTypeNames.add(st7.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT14", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location10");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device9",
-					l);
-			Sensor s = new Sensor("JUnit-Test-Sensor4",
-					st6.getSensorTypeName(), d.getUri());
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC25",
+				"For Integration Testing");
+		SensorType st6 = new SensorType("JUnit-Test-ST33",
+				sc.getSensorCategoryName());
+		SensorType st7 = new SensorType("JUnit-Test-ST34",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st6.getSensorTypeName());
+		sensorTypeNames.add(st7.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT14", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location10");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device9", l);
+		Sensor s = new Sensor("JUnit-Test-Sensor4", st6.getSensorTypeName(),
+				d.getUri());
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st6);
 			addSensorType(st7);
@@ -749,39 +769,41 @@ public class APIIntegrationTest extends BaseTest {
 			addSensor(s);
 
 			getSensor(s, ResultType.CSV);
-
-			// Clean up
-			deleteSensor(s);
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(st7);
-			deleteSensorType(st6);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteSensor(s);
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(st7);
+				deleteSensorType(st6);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void getSensorJSON() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC26",
-					"For Integration Testing");
-			SensorType st6 = new SensorType("JUnit-Test-ST35",
-					sc.getSensorCategoryName());
-			SensorType st7 = new SensorType("JUnit-Test-ST36",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st6.getSensorTypeName());
-			sensorTypeNames.add(st7.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT15", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location11");
-			Device d = new Device(dt.getDeviceTypeName(),
-					"JUnit-Test-Device10", l);
-			Sensor s = new Sensor("JUnit-Test-Sensor5",
-					st6.getSensorTypeName(), d.getUri());
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC26",
+				"For Integration Testing");
+		SensorType st6 = new SensorType("JUnit-Test-ST35",
+				sc.getSensorCategoryName());
+		SensorType st7 = new SensorType("JUnit-Test-ST36",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st6.getSensorTypeName());
+		sensorTypeNames.add(st7.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT15", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location11");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device10", l);
+		Sensor s = new Sensor("JUnit-Test-Sensor5", st6.getSensorTypeName(),
+				d.getUri());
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st6);
 			addSensorType(st7);
@@ -790,17 +812,20 @@ public class APIIntegrationTest extends BaseTest {
 			addSensor(s);
 
 			getSensor(s, ResultType.JSON);
-
-			// Clean up
-			deleteSensor(s);
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(st7);
-			deleteSensorType(st6);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteSensor(s);
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(st7);
+				deleteSensorType(st6);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
