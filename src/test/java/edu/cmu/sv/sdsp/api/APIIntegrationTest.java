@@ -478,6 +478,72 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 	
+	@Test
+	public void getDeviceTypeCSV() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC19",
+					"For Integration Testing");
+			SensorType st1 = new SensorType("JUnit-Test-ST21",
+					sc.getSensorCategoryName());
+			SensorType st2 = new SensorType("JUnit-Test-ST22",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(st1.getSensorTypeName());
+			sensorTypeNames.add(st2.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT8", sensorTypeNames);
+
+			addSensorCategory(sc);
+			addSensorType(st1);
+			addSensorType(st2);
+			addDeviceType(dt);
+
+			String resp = getDeviceType(dt, ResultType.CSV);
+			assertReponseNotNull(resp);
+			
+			// Clean up
+			deleteDeviceType(dt);
+			deleteSensorType(st2);
+			deleteSensorType(st1);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void getDeviceTypeJSON() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC20",
+					"For Integration Testing");
+			SensorType st1 = new SensorType("JUnit-Test-ST23",
+					sc.getSensorCategoryName());
+			SensorType st2 = new SensorType("JUnit-Test-ST24",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(st1.getSensorTypeName());
+			sensorTypeNames.add(st2.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT9", sensorTypeNames);
+
+			addSensorCategory(sc);
+			addSensorType(st1);
+			addSensorType(st2);
+			addDeviceType(dt);
+
+			String resp = getDeviceType(dt, ResultType.CSV);
+			assertReponseNotNull(resp);
+			
+			// Clean up
+			deleteDeviceType(dt);
+			deleteSensorType(st2);
+			deleteSensorType(st1);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
 	private String getDeviceType(DeviceType dt, ResultType type)
 			throws HttpException, IOException {
 		String resp = APIHelper.getDeviceType(dt, null);
