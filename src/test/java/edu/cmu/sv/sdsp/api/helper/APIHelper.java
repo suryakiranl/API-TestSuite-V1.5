@@ -254,4 +254,10 @@ public class APIHelper extends APIUrls {
 		String urlPrefix = GET_DEVICE_TYPE + "/" + dt.getDeviceTypeName();
 		return processRequest(urlPrefix, type);
 	}
+	
+	public static String getDevice(Device d, ResultType type)
+			throws HttpException, IOException {
+		String urlPrefix = GET_DEVICE + "/" + d.getUri();
+		return processRequest(urlPrefix, type);
+	}
 }

@@ -544,9 +544,55 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 	
+	@Test
+	public void getDevice() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC21",
+					"For Integration Testing");
+			SensorType st4 = new SensorType("JUnit-Test-ST25",
+					sc.getSensorCategoryName());
+			SensorType st5 = new SensorType("JUnit-Test-ST26",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(st4.getSensorTypeName());
+			sensorTypeNames.add(st5.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT10", sensorTypeNames);
+			Location l = new Location("JUnit-Test-Location6");
+			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device5",
+					l);
+
+			addSensorCategory(sc);
+			addSensorType(st4);
+			addSensorType(st5);
+			addDeviceType(dt);
+			addDevice(d);
+			
+			String resp = getDevice(d, null);
+			assertReponseNotNull(resp);
+
+			// Clean up
+			deleteDevice(d);
+			deleteDeviceType(dt);
+			deleteSensorType(st5);
+			deleteSensorType(st4);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	private String getDevice(Device d, ResultType type)
+			throws HttpException, IOException {
+		String resp = APIHelper.getDevice(d, type);
+		assertReponseNotNull(resp);
+
+		return resp;
+	}
+	
 	private String getDeviceType(DeviceType dt, ResultType type)
 			throws HttpException, IOException {
-		String resp = APIHelper.getDeviceType(dt, null);
+		String resp = APIHelper.getDeviceType(dt, type);
 		assertReponseNotNull(resp);
 
 		return resp;

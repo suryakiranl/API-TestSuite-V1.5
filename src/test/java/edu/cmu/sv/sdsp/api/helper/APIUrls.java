@@ -125,4 +125,9 @@ public class APIUrls {
 	 * URI to get "Device Type" by name
 	 */
 	public static final String GET_DEVICE_TYPE = HOST_NAME + "/getDeviceType";
+	
+	/**
+	 * URI to get "Device" by name
+	 */
+	public static final String GET_DEVICE = HOST_NAME + "/getDevice";
 }
