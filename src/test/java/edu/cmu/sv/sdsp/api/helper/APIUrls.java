@@ -110,4 +110,9 @@ public class APIUrls {
 	 * URI to update a "Device" using POST
 	 */
 	public static final String UPDATE_DEVICE = HOST_NAME + "/updateDevice";
+	
+	/**
+	 * URI to get "Sensor Category" by name
+	 */
+	public static final String GET_SENSOR_CATEGORY = HOST_NAME + "/getSensorCategory";
 }

@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import edu.cmu.sv.sdsp.api.helper.APIHelper;
+import edu.cmu.sv.sdsp.api.helper.APIHelper.ResultType;
 import edu.cmu.sv.sdsp.api.json.Device;
 import edu.cmu.sv.sdsp.api.json.DeviceType;
 import edu.cmu.sv.sdsp.api.json.Location;
@@ -325,6 +326,29 @@ public class APIIntegrationTest extends BaseTest {
 			log.error(e);
 			Assert.fail();
 		}
+	}
+	
+	@Test
+	public void getSensorCategory() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC1",
+				"For Integration Testing");
+		try {
+			addSensorCategory(sc);
+			
+			getSensorCategory(sc, null);
+			
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	private String getSensorCategory(SensorCategory sc, ResultType type) throws HttpException, IOException {
+		String resp = APIHelper.getSensorCategory(sc, type);
+		assertReponseNotNull(resp);
+		
+		return resp;
 	}
 	
 	private String updateDevice(Device d)

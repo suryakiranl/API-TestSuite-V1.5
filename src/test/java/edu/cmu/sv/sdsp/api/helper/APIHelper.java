@@ -141,106 +141,114 @@ public class APIHelper extends APIUrls {
 
 		return invokeHttpOperation(RequestType.DELETE, url, null);
 	}
-	
-	public static String addSensorType(SensorType st)
-			throws HttpException, IOException {
+
+	public static String addSensorType(SensorType st) throws HttpException,
+			IOException {
 		Gson gson = new Gson();
 		String json = gson.toJson(st);
 
 		return invokeHttpOperation(RequestType.POST, ADD_SENSOR_TYPE, json);
 	}
 
-	public static String deleteSensorType(SensorType st)
-			throws HttpException, IOException {
+	public static String deleteSensorType(SensorType st) throws HttpException,
+			IOException {
 		String url = DELETE_SENSOR_TYPE + "/" + st.getSensorTypeName();
 
 		return invokeHttpOperation(RequestType.DELETE, url, null);
 	}
-	
-	public static String addSensor(Sensor s)
-			throws HttpException, IOException {
+
+	public static String addSensor(Sensor s) throws HttpException, IOException {
 		Gson gson = new Gson();
 		String json = gson.toJson(s);
 
 		return invokeHttpOperation(RequestType.POST, ADD_SENSOR, json);
 	}
 
-	public static String deleteSensor(Sensor s)
-			throws HttpException, IOException {
+	public static String deleteSensor(Sensor s) throws HttpException,
+			IOException {
 		String url = DELETE_SENSOR + "/" + s.getSensorName();
 
 		return invokeHttpOperation(RequestType.DELETE, url, null);
 	}
-	
-	public static String addDeviceType(DeviceType dt)
-			throws HttpException, IOException {
+
+	public static String addDeviceType(DeviceType dt) throws HttpException,
+			IOException {
 		Gson gson = new Gson();
 		String json = gson.toJson(dt);
 
 		return invokeHttpOperation(RequestType.POST, ADD_DEVICE_TYPE, json);
 	}
 
-	public static String deleteDeviceType(DeviceType dt)
-			throws HttpException, IOException {
+	public static String deleteDeviceType(DeviceType dt) throws HttpException,
+			IOException {
 		String url = DELETE_DEVICE_TYPE + "/" + dt.getDeviceTypeName();
 
 		return invokeHttpOperation(RequestType.DELETE, url, null);
 	}
-	
-	public static String addDevice(Device d)
-			throws HttpException, IOException {
+
+	public static String addDevice(Device d) throws HttpException, IOException {
 		Gson gson = new Gson();
 		String json = gson.toJson(d);
 
 		return invokeHttpOperation(RequestType.POST, ADD_DEVICE, json);
 	}
 
-	public static String deleteDevice(Device d)
-			throws HttpException, IOException {
+	public static String deleteDevice(Device d) throws HttpException,
+			IOException {
 		String url = DELETE_DEVICE + "/" + d.getUri();
 
 		return invokeHttpOperation(RequestType.DELETE, url, null);
 	}
-	
-	public static String updateSensorType(SensorType st)
-			throws HttpException, IOException {
+
+	public static String updateSensorType(SensorType st) throws HttpException,
+			IOException {
 		Gson gson = new Gson();
 		String json = gson.toJson(st);
 
 		return invokeHttpOperation(RequestType.POST, UPDATE_SENSOR_TYPE, json);
 	}
-	
+
 	public static String updateSensorCategory(SensorCategory sc)
 			throws HttpException, IOException {
 		Gson gson = new Gson();
 		String json = gson.toJson(sc);
 
-		return invokeHttpOperation(RequestType.POST, UPDATE_SENSOR_CATEGORY, json);
+		return invokeHttpOperation(RequestType.POST, UPDATE_SENSOR_CATEGORY,
+				json);
 	}
-	
-	public static String updateSensor(Sensor s)
-			throws HttpException, IOException {
+
+	public static String updateSensor(Sensor s) throws HttpException,
+			IOException {
 		Gson gson = new Gson();
 		String json = gson.toJson(s);
 
 		return invokeHttpOperation(RequestType.POST, UPDATE_SENSOR, json);
 	}
-	
-	public static String updateDeviceType(DeviceType dt)
-			throws HttpException, IOException {
+
+	public static String updateDeviceType(DeviceType dt) throws HttpException,
+			IOException {
 		Gson gson = new Gson();
 		String json = gson.toJson(dt);
 		String url = UPDATE_DEVICE_TYPE + "/" + dt.getDeviceTypeName();
 
 		return invokeHttpOperation(RequestType.PUT, url, json);
 	}
-	
-	public static String updateDevice(Device d)
-			throws HttpException, IOException {
+
+	public static String updateDevice(Device d) throws HttpException,
+			IOException {
 		Gson gson = new Gson();
 		String json = gson.toJson(d);
 		String url = UPDATE_DEVICE + "/" + d.getUri();
 
 		return invokeHttpOperation(RequestType.PUT, url, json);
+	}
+
+	public static String getSensorCategory(SensorCategory sc, ResultType type)
+			throws HttpException, IOException {
+		String scPrefix = GET_SENSOR_CATEGORY + "/" + sc.getSensorCategoryName();
+		String url = (type == null) ? scPrefix : scPrefix + "/"
+				+ type.toString().toLowerCase();
+
+		return invokeHttpOperation(RequestType.GET, url, null);
 	}
 }
