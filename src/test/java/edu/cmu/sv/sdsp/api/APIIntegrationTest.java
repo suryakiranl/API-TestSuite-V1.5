@@ -210,6 +210,59 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 	
+	@Test
+	public void updateSensor() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC8",
+					"For Integration Testing");
+			SensorType stA = new SensorType("JUnit-Test-ST9",
+					sc.getSensorCategoryName());
+			SensorType stB = new SensorType("JUnit-Test-ST10",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(stA.getSensorTypeName());
+			sensorTypeNames.add(stB.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT4", sensorTypeNames);
+			Location l = new Location("JUnit-Test-Location3");
+			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device3",
+					l);
+			Sensor s = new Sensor("JUnit-Test-Sensor2",
+					stA.getSensorTypeName(), d.getUri());
+
+			addSensorCategory(sc);
+			addSensorType(stA);
+			addSensorType(stB);
+			addDeviceType(dt);
+			addDevice(d);
+			addSensor(s);
+			
+			// Update 
+			s.setSensorUserDefinedFields("Updated value: good");
+			updateSensor(s);
+
+			// Clean up
+			deleteSensor(s);
+			deleteDevice(d);
+			deleteDeviceType(dt);
+			deleteSensorType(stB);
+			deleteSensorType(stA);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	private String updateSensor(Sensor s)
+			throws HttpException, IOException {
+		String resp = APIHelper.updateSensor(s);
+		Assert.assertTrue(
+				"Response should contain the word 'Sensor updated'",
+				resp.contains("Sensor updated"));
+
+		return resp;
+	}
+	
 	private String updateSensorCategory(SensorCategory sc) throws HttpException,
 			IOException {
 		String resp = APIHelper.updateSensorCategory(sc);
