@@ -1,6 +1,8 @@
 package edu.cmu.sv.sdsp.api;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
 import org.junit.Assert;
@@ -9,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import edu.cmu.sv.sdsp.api.helper.APIHelper;
+import edu.cmu.sv.sdsp.api.json.DeviceType;
 import edu.cmu.sv.sdsp.api.json.Sensor;
 import edu.cmu.sv.sdsp.api.json.SensorCategory;
 import edu.cmu.sv.sdsp.api.json.SensorType;
@@ -56,6 +59,36 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
+	
+	@Test 
+	public void addAndRemoveDeviceType() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC3",
+					"For Integration Testing");
+			SensorType st1 = new SensorType("JUnit-Test-ST2",
+					sc.getSensorCategoryName());
+			SensorType st2 = new SensorType("JUnit-Test-ST3",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(st1.getSensorTypeName());
+			sensorTypeNames.add(st2.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT1", sensorTypeNames);
+
+			addSensorCategory(sc);
+			addSensorType(st1);
+			addSensorType(st2);
+			addDeviceType(dt);
+			
+			// Clean up
+			deleteDeviceType(dt);
+			deleteSensorType(st2);
+			deleteSensorType(st1);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
 
 	@Test
 	public void addAndRemoveSensor() {
@@ -82,6 +115,24 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 
+	private String addDeviceType(DeviceType dt) throws HttpException, IOException {
+		String resp = APIHelper.addDeviceType(dt);
+		 Assert.assertTrue(
+		 "Response should contain the word 'device type saved'",
+		 resp.contains("device type saved"));
+
+		return resp;
+	}
+
+	private String deleteDeviceType(DeviceType dt) throws HttpException, IOException {
+		String resp = APIHelper.deleteDeviceType(dt);
+		 Assert.assertTrue(
+		 "Response should contain the word 'Device type deleted'",
+		 resp.contains("Device type deleted"));
+
+		return resp;
+	}
+	
 	private String addSensor(Sensor s) throws HttpException, IOException {
 		String resp = APIHelper.addSensor(s);
 		// Assert.assertTrue(

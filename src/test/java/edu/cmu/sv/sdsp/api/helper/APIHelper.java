@@ -6,6 +6,7 @@ import org.apache.commons.httpclient.HttpException;
 
 import com.google.gson.Gson;
 
+import edu.cmu.sv.sdsp.api.json.DeviceType;
 import edu.cmu.sv.sdsp.api.json.Sensor;
 import edu.cmu.sv.sdsp.api.json.SensorCategory;
 import edu.cmu.sv.sdsp.api.json.SensorType;
@@ -97,6 +98,16 @@ public class APIHelper {
 	 * URI to delete a "Sensor" using DELETE
 	 */
 	public static final String DELETE_SENSOR = HOST_NAME + "/deleteSensor";
+	
+	/**
+	 * URI to add a "Device Type" using POST
+	 */
+	public static final String ADD_DEVICE_TYPE = HOST_NAME + "/addDeviceType";
+	
+	/**
+	 * URI to delete a "Device Type" using DELETE
+	 */
+	public static final String DELETE_DEVICE_TYPE = HOST_NAME + "/deleteDeviceType";
 
 	/**
 	 * Utility function to invoke a HTTP operation.
@@ -228,6 +239,21 @@ public class APIHelper {
 	public static String deleteSensor(Sensor s)
 			throws HttpException, IOException {
 		String url = DELETE_SENSOR + "/" + s.getSensorName();
+
+		return invokeHttpOperation(RequestType.DELETE, url, null);
+	}
+	
+	public static String addDeviceType(DeviceType dt)
+			throws HttpException, IOException {
+		Gson gson = new Gson();
+		String json = gson.toJson(dt);
+
+		return invokeHttpOperation(RequestType.POST, ADD_DEVICE_TYPE, json);
+	}
+
+	public static String deleteDeviceType(DeviceType dt)
+			throws HttpException, IOException {
+		String url = DELETE_DEVICE_TYPE + "/" + dt.getDeviceTypeName();
 
 		return invokeHttpOperation(RequestType.DELETE, url, null);
 	}
