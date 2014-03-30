@@ -166,7 +166,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void updateSensorType() {
 		try {
@@ -177,7 +177,7 @@ public class APIIntegrationTest extends BaseTest {
 
 			addSensorCategory(sc);
 			addSensorType(st);
-			
+
 			// Update
 			st.setSensorTypeUserDefinedFields("Updated value: good");
 			updateSensorType(st);
@@ -190,7 +190,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void updateSensorCategory() {
 		try {
@@ -198,11 +198,11 @@ public class APIIntegrationTest extends BaseTest {
 					"For Integration Testing");
 
 			addSensorCategory(sc);
-			
+
 			// Update
 			sc.setPurpose("Purpose changed to Production testing");
 			updateSensorCategory(sc);
-			
+
 			// Clean up
 			deleteSensorCategory(sc);
 		} catch (IOException e) {
@@ -210,7 +210,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void updateSensor() {
 		try {
@@ -236,8 +236,8 @@ public class APIIntegrationTest extends BaseTest {
 			addDeviceType(dt);
 			addDevice(d);
 			addSensor(s);
-			
-			// Update 
+
+			// Update
 			s.setSensorUserDefinedFields("Updated value: good");
 			updateSensor(s);
 
@@ -253,7 +253,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void updateDeviceType() {
 		try {
@@ -272,7 +272,7 @@ public class APIIntegrationTest extends BaseTest {
 			addSensorType(stA);
 			addSensorType(stB);
 			addDeviceType(dt);
-			
+
 			// Update
 			dt.setDeviceTypeUserDefinedFields("Updated value: good");
 			updateDeviceType(dt);
@@ -287,7 +287,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void updateDevice() {
 		try {
@@ -315,7 +315,7 @@ public class APIIntegrationTest extends BaseTest {
 			Location lMoved = new Location("JUnit-Test-Location5");
 			d.setLocation(lMoved);
 			updateDevice(d);
-			
+
 			// Clean up
 			deleteDevice(d);
 			deleteDeviceType(dt);
@@ -327,48 +327,71 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getSensorCategory() {
 		SensorCategory sc = new SensorCategory("JUnit-Test-SC11",
 				"For Integration Testing");
 		try {
 			addSensorCategory(sc);
-			
+
 			getSensorCategory(sc, null);
-			
+
 			deleteSensorCategory(sc);
 		} catch (IOException e) {
 			log.error(e);
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getSensorCategoryCSV() {
 		SensorCategory sc = new SensorCategory("JUnit-Test-SC12",
 				"For Integration Testing");
 		try {
 			addSensorCategory(sc);
-			
+
 			getSensorCategory(sc, ResultType.CSV);
-			
+
 			deleteSensorCategory(sc);
 		} catch (IOException e) {
 			log.error(e);
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getSensorCategoryJSON() {
 		SensorCategory sc = new SensorCategory("JUnit-Test-SC13",
 				"For Integration Testing");
 		try {
 			addSensorCategory(sc);
-			
+
 			getSensorCategory(sc, ResultType.JSON);
+
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+
+	@Test
+	public void getSensorType() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC14",
+					"For Integration Testing");
+			SensorType st = new SensorType("JUnit-Test-ST15",
+					sc.getSensorCategoryName());
+
+			addSensorCategory(sc);
+			addSensorType(st);
 			
+			String resp = getSensorType(st, null);
+			assertReponseNotNull(resp);
+
+			// Clean up
+			deleteSensorType(st);
 			deleteSensorCategory(sc);
 		} catch (IOException e) {
 			log.error(e);
@@ -376,45 +399,51 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 	
-	private String getSensorCategory(SensorCategory sc, ResultType type) throws HttpException, IOException {
-		String resp = APIHelper.getSensorCategory(sc, type);
+	private String getSensorType(SensorType st, ResultType type)
+			throws HttpException, IOException {
+		String resp = APIHelper.getSensorType(st, type);
 		assertReponseNotNull(resp);
-		
+
 		return resp;
 	}
-	
-	private String updateDevice(Device d)
+
+	private String getSensorCategory(SensorCategory sc, ResultType type)
 			throws HttpException, IOException {
+		String resp = APIHelper.getSensorCategory(sc, type);
+		assertReponseNotNull(resp);
+
+		return resp;
+	}
+
+	private String updateDevice(Device d) throws HttpException, IOException {
 		String resp = APIHelper.updateDevice(d);
-		Assert.assertTrue(
-				"Response should contain the content: " + d.getUri(),
+		Assert.assertTrue("Response should contain the content: " + d.getUri(),
 				resp.contains(d.getUri()));
 
 		return resp;
 	}
-	
-	private String updateDeviceType(DeviceType dt)
-			throws HttpException, IOException {
+
+	private String updateDeviceType(DeviceType dt) throws HttpException,
+			IOException {
 		String resp = APIHelper.updateDeviceType(dt);
 		Assert.assertTrue(
-				"Response should contain the content: " + dt.getDeviceTypeUserDefinedFields(),
+				"Response should contain the content: "
+						+ dt.getDeviceTypeUserDefinedFields(),
 				resp.contains(dt.getDeviceTypeUserDefinedFields()));
 
 		return resp;
 	}
-	
-	private String updateSensor(Sensor s)
-			throws HttpException, IOException {
+
+	private String updateSensor(Sensor s) throws HttpException, IOException {
 		String resp = APIHelper.updateSensor(s);
-		Assert.assertTrue(
-				"Response should contain the word 'Sensor updated'",
+		Assert.assertTrue("Response should contain the word 'Sensor updated'",
 				resp.contains("Sensor updated"));
 
 		return resp;
 	}
-	
-	private String updateSensorCategory(SensorCategory sc) throws HttpException,
-			IOException {
+
+	private String updateSensorCategory(SensorCategory sc)
+			throws HttpException, IOException {
 		String resp = APIHelper.updateSensorCategory(sc);
 		Assert.assertTrue(
 				"Response should contain the word 'Sensor category updated'",
@@ -422,7 +451,7 @@ public class APIIntegrationTest extends BaseTest {
 
 		return resp;
 	}
-	
+
 	private String updateSensorType(SensorType st) throws HttpException,
 			IOException {
 		String resp = APIHelper.updateSensorType(st);
@@ -524,5 +553,5 @@ public class APIIntegrationTest extends BaseTest {
 
 		return resp;
 	}
-	
+
 }

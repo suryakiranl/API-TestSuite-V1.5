@@ -251,4 +251,13 @@ public class APIHelper extends APIUrls {
 
 		return invokeHttpOperation(RequestType.GET, url, null);
 	}
+	
+	public static String getSensorType(SensorType st, ResultType type)
+			throws HttpException, IOException {
+		String stPrefix = GET_SENSOR_TYPE + "/" + st.getSensorTypeName();
+		String url = (type == null) ? stPrefix : stPrefix + "/"
+				+ type.toString().toLowerCase();
+
+		return invokeHttpOperation(RequestType.GET, url, null);
+	}
 }
