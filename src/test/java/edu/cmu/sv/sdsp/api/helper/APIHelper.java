@@ -119,6 +119,31 @@ public class APIHelper {
 	 * URI to delete a "Device" using DELETE
 	 */
 	public static final String DELETE_DEVICE = HOST_NAME + "/deleteDevice";
+	
+	/**
+	 * URI to update a "Sensor Type" using POST
+	 */
+	public static final String UPDATE_SENSOR_TYPE = HOST_NAME + "/updateSensorType";
+	
+	/**
+	 * URI to update a "Sensor Category" using POST
+	 */
+	public static final String UPDATE_SENSOR_CATEGORY = HOST_NAME + "/updateSensorCategory";
+	
+	/**
+	 * URI to update a "Sensor" using POST
+	 */
+	public static final String UPDATE_SENSOR = HOST_NAME + "/updateSensor";
+	
+	/**
+	 * URI to update a "Device Type" using POST
+	 */
+	public static final String UPDATE_DEVICE_TYPE = HOST_NAME + "/updateDeviceType";
+	
+	/**
+	 * URI to update a "Device" using POST
+	 */
+	public static final String UPDATE_DEVICE = HOST_NAME + "/updateDevice";
 
 	/**
 	 * Utility function to invoke a HTTP operation.
@@ -282,5 +307,13 @@ public class APIHelper {
 		String url = DELETE_DEVICE + "/" + d.getUri();
 
 		return invokeHttpOperation(RequestType.DELETE, url, null);
+	}
+	
+	public static String updateSensorType(SensorType st)
+			throws HttpException, IOException {
+		Gson gson = new Gson();
+		String json = gson.toJson(st);
+
+		return invokeHttpOperation(RequestType.POST, UPDATE_SENSOR_TYPE, json);
 	}
 }
