@@ -399,6 +399,52 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 	
+	@Test
+	public void getSensorTypeCSV() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC14",
+					"For Integration Testing");
+			SensorType st = new SensorType("JUnit-Test-ST15",
+					sc.getSensorCategoryName());
+
+			addSensorCategory(sc);
+			addSensorType(st);
+			
+			String resp = getSensorType(st, ResultType.CSV);
+			assertReponseNotNull(resp);
+
+			// Clean up
+			deleteSensorType(st);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void getSensorTypeJSON() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC14",
+					"For Integration Testing");
+			SensorType st = new SensorType("JUnit-Test-ST15",
+					sc.getSensorCategoryName());
+
+			addSensorCategory(sc);
+			addSensorType(st);
+			
+			String resp = getSensorType(st, ResultType.JSON);
+			assertReponseNotNull(resp);
+
+			// Clean up
+			deleteSensorType(st);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
 	private String getSensorType(SensorType st, ResultType type)
 			throws HttpException, IOException {
 		String resp = APIHelper.getSensorType(st, type);
