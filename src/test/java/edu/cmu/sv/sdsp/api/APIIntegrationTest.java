@@ -171,8 +171,7 @@ public class APIIntegrationTest extends BaseTest {
 			addDevice(d);
 			addSensor(s);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
 		} finally {
 			try {
 				// Clean up
@@ -182,7 +181,7 @@ public class APIIntegrationTest extends BaseTest {
 				deleteSensorType(st7);
 				deleteSensorType(st6);
 				deleteSensorCategory(sc);
-			} catch(IOException e) {
+			} catch (IOException e) {
 				processException(e);
 			}
 		}
@@ -190,67 +189,71 @@ public class APIIntegrationTest extends BaseTest {
 
 	@Test
 	public void updateSensorType() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC6",
+				"For Integration Testing");
+		SensorType st = new SensorType("JUnit-Test-ST8",
+				sc.getSensorCategoryName());
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC6",
-					"For Integration Testing");
-			SensorType st = new SensorType("JUnit-Test-ST8",
-					sc.getSensorCategoryName());
-
 			addSensorCategory(sc);
 			addSensorType(st);
 
 			// Update
 			st.setSensorTypeUserDefinedFields("Updated value: good");
 			updateSensorType(st);
-
-			// Clean up
-			deleteSensorType(st);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteSensorType(st);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void updateSensorCategory() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC7",
-					"For Integration Testing");
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC7",
+				"For Integration Testing");
 
+		try {
 			addSensorCategory(sc);
 
 			// Update
 			sc.setPurpose("Purpose changed to Production testing");
 			updateSensorCategory(sc);
-
-			// Clean up
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void updateSensor() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC8",
-					"For Integration Testing");
-			SensorType stA = new SensorType("JUnit-Test-ST9",
-					sc.getSensorCategoryName());
-			SensorType stB = new SensorType("JUnit-Test-ST10",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(stA.getSensorTypeName());
-			sensorTypeNames.add(stB.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT4", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location3");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device3",
-					l);
-			Sensor s = new Sensor("JUnit-Test-Sensor2",
-					stA.getSensorTypeName(), d.getUri());
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC8",
+				"For Integration Testing");
+		SensorType stA = new SensorType("JUnit-Test-ST9",
+				sc.getSensorCategoryName());
+		SensorType stB = new SensorType("JUnit-Test-ST10",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(stA.getSensorTypeName());
+		sensorTypeNames.add(stB.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT4", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location3");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device3", l);
+		Sensor s = new Sensor("JUnit-Test-Sensor2", stA.getSensorTypeName(),
+				d.getUri());
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(stA);
 			addSensorType(stB);
@@ -261,34 +264,37 @@ public class APIIntegrationTest extends BaseTest {
 			// Update
 			s.setSensorUserDefinedFields("Updated value: good");
 			updateSensor(s);
-
-			// Clean up
-			deleteSensor(s);
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(stB);
-			deleteSensorType(stA);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteSensor(s);
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(stB);
+				deleteSensorType(stA);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void updateDeviceType() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC9",
-					"For Integration Testing");
-			SensorType stA = new SensorType("JUnit-Test-ST11",
-					sc.getSensorCategoryName());
-			SensorType stB = new SensorType("JUnit-Test-ST12",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(stA.getSensorTypeName());
-			sensorTypeNames.add(stB.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT5", sensorTypeNames);
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC9",
+				"For Integration Testing");
+		SensorType stA = new SensorType("JUnit-Test-ST11",
+				sc.getSensorCategoryName());
+		SensorType stB = new SensorType("JUnit-Test-ST12",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(stA.getSensorTypeName());
+		sensorTypeNames.add(stB.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT5", sensorTypeNames);
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(stA);
 			addSensorType(stB);
@@ -297,35 +303,37 @@ public class APIIntegrationTest extends BaseTest {
 			// Update
 			dt.setDeviceTypeUserDefinedFields("Updated value: good");
 			updateDeviceType(dt);
-
-			// Clean up
-			deleteDeviceType(dt);
-			deleteSensorType(stB);
-			deleteSensorType(stA);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDeviceType(dt);
+				deleteSensorType(stB);
+				deleteSensorType(stA);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void updateDevice() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC10",
-					"For Integration Testing");
-			SensorType st4 = new SensorType("JUnit-Test-ST13",
-					sc.getSensorCategoryName());
-			SensorType st5 = new SensorType("JUnit-Test-ST14",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st4.getSensorTypeName());
-			sensorTypeNames.add(st5.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT6", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location4");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device4",
-					l);
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC10",
+				"For Integration Testing");
+		SensorType st4 = new SensorType("JUnit-Test-ST13",
+				sc.getSensorCategoryName());
+		SensorType st5 = new SensorType("JUnit-Test-ST14",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st4.getSensorTypeName());
+		sensorTypeNames.add(st5.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT6", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location4");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device4", l);
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st4);
 			addSensorType(st5);
@@ -336,16 +344,19 @@ public class APIIntegrationTest extends BaseTest {
 			Location lMoved = new Location("JUnit-Test-Location5");
 			d.setLocation(lMoved);
 			updateDevice(d);
-
-			// Clean up
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(st5);
-			deleteSensorType(st4);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(st5);
+				deleteSensorType(st4);
+				deleteSensorCategory(sc);
+			} catch(IOException e) {
+				processException(e);
+			}
 		}
 	}
 
