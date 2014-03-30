@@ -287,6 +287,56 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 	
+	@Test
+	public void updateDevice() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC10",
+					"For Integration Testing");
+			SensorType st4 = new SensorType("JUnit-Test-ST13",
+					sc.getSensorCategoryName());
+			SensorType st5 = new SensorType("JUnit-Test-ST14",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(st4.getSensorTypeName());
+			sensorTypeNames.add(st5.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT6", sensorTypeNames);
+			Location l = new Location("JUnit-Test-Location4");
+			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device4",
+					l);
+
+			addSensorCategory(sc);
+			addSensorType(st4);
+			addSensorType(st5);
+			addDeviceType(dt);
+			addDevice(d);
+
+			// Update
+			Location lMoved = new Location("JUnit-Test-Location5");
+			d.setLocation(lMoved);
+			updateDevice(d);
+			
+			// Clean up
+			deleteDevice(d);
+			deleteDeviceType(dt);
+			deleteSensorType(st5);
+			deleteSensorType(st4);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	private String updateDevice(Device d)
+			throws HttpException, IOException {
+		String resp = APIHelper.updateDevice(d);
+		Assert.assertTrue(
+				"Response should contain the content: " + d.getUri(),
+				resp.contains(d.getUri()));
+
+		return resp;
+	}
+	
 	private String updateDeviceType(DeviceType dt)
 			throws HttpException, IOException {
 		String resp = APIHelper.updateDeviceType(dt);

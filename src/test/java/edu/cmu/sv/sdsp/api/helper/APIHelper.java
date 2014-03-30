@@ -344,4 +344,13 @@ public class APIHelper {
 
 		return invokeHttpOperation(RequestType.PUT, url, json);
 	}
+	
+	public static String updateDevice(Device d)
+			throws HttpException, IOException {
+		Gson gson = new Gson();
+		String json = gson.toJson(d);
+		String url = UPDATE_DEVICE + "/" + d.getUri();
+
+		return invokeHttpOperation(RequestType.PUT, url, json);
+	}
 }
