@@ -176,6 +176,8 @@ public class APIIntegrationTest extends BaseTest {
 
 			addSensorCategory(sc);
 			addSensorType(st);
+			
+			// Update
 			st.setSensorTypeUserDefinedFields("Updated value: good");
 			updateSensorType(st);
 
@@ -188,6 +190,36 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 	
+	@Test
+	public void updateSensorCategory() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC7",
+					"For Integration Testing");
+
+			addSensorCategory(sc);
+			
+			// Update
+			sc.setPurpose("Purpose changed to Production testing");
+			updateSensorCategory(sc);
+			
+			// Clean up
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	private String updateSensorCategory(SensorCategory sc) throws HttpException,
+			IOException {
+		String resp = APIHelper.updateSensorCategory(sc);
+		Assert.assertTrue(
+				"Response should contain the word 'Sensor category updated'",
+				resp.contains("Sensor category updated"));
+
+		return resp;
+	}
+	
 	private String updateSensorType(SensorType st) throws HttpException,
 			IOException {
 		String resp = APIHelper.updateSensorType(st);
@@ -197,9 +229,6 @@ public class APIIntegrationTest extends BaseTest {
 
 		return resp;
 	}
-	
-	
-	
 
 	private String addSensor(Sensor s) throws HttpException, IOException {
 		String resp = APIHelper.addSensor(s);

@@ -316,4 +316,12 @@ public class APIHelper {
 
 		return invokeHttpOperation(RequestType.POST, UPDATE_SENSOR_TYPE, json);
 	}
+	
+	public static String updateSensorCategory(SensorCategory sc)
+			throws HttpException, IOException {
+		Gson gson = new Gson();
+		String json = gson.toJson(sc);
+
+		return invokeHttpOperation(RequestType.POST, UPDATE_SENSOR_CATEGORY, json);
+	}
 }
