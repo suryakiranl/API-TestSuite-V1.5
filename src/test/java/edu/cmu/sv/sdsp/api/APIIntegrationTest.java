@@ -690,6 +690,88 @@ public class APIIntegrationTest extends BaseTest {
 		}
 	}
 	
+	@Test
+	public void getSensorCSV() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC25",
+					"For Integration Testing");
+			SensorType st6 = new SensorType("JUnit-Test-ST33",
+					sc.getSensorCategoryName());
+			SensorType st7 = new SensorType("JUnit-Test-ST34",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(st6.getSensorTypeName());
+			sensorTypeNames.add(st7.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT14", sensorTypeNames);
+			Location l = new Location("JUnit-Test-Location10");
+			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device9",
+					l);
+			Sensor s = new Sensor("JUnit-Test-Sensor4",
+					st6.getSensorTypeName(), d.getUri());
+
+			addSensorCategory(sc);
+			addSensorType(st6);
+			addSensorType(st7);
+			addDeviceType(dt);
+			addDevice(d);
+			addSensor(s);
+			
+			getSensor(s, ResultType.CSV);
+
+			// Clean up
+			deleteSensor(s);
+			deleteDevice(d);
+			deleteDeviceType(dt);
+			deleteSensorType(st7);
+			deleteSensorType(st6);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void getSensorJSON() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC26",
+					"For Integration Testing");
+			SensorType st6 = new SensorType("JUnit-Test-ST35",
+					sc.getSensorCategoryName());
+			SensorType st7 = new SensorType("JUnit-Test-ST36",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(st6.getSensorTypeName());
+			sensorTypeNames.add(st7.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT15", sensorTypeNames);
+			Location l = new Location("JUnit-Test-Location11");
+			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device10",
+					l);
+			Sensor s = new Sensor("JUnit-Test-Sensor5",
+					st6.getSensorTypeName(), d.getUri());
+
+			addSensorCategory(sc);
+			addSensorType(st6);
+			addSensorType(st7);
+			addDeviceType(dt);
+			addDevice(d);
+			addSensor(s);
+			
+			getSensor(s, ResultType.JSON);
+
+			// Clean up
+			deleteSensor(s);
+			deleteDevice(d);
+			deleteDeviceType(dt);
+			deleteSensorType(st7);
+			deleteSensorType(st6);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
 	private String getSensor(Sensor s, ResultType type)
 			throws HttpException, IOException {
 		String resp = APIHelper.getSensor(s, type);
