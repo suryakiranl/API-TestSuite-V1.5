@@ -260,4 +260,10 @@ public class APIHelper extends APIUrls {
 		String urlPrefix = GET_DEVICE + "/" + d.getUri();
 		return processRequest(urlPrefix, type);
 	}
+	
+	public static String getSensor(Sensor s, ResultType type)
+			throws HttpException, IOException {
+		String urlPrefix = GET_SENSOR + "/" + s.getSensorName();
+		return processRequest(urlPrefix, type);
+	}
 }
