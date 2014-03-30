@@ -32,7 +32,7 @@ public class APIHelper {
 	}
 
 	private static enum RequestType {
-		GET, POST, DELETE
+		GET, POST, DELETE, PUT
 	}
 
 	/**
@@ -176,6 +176,9 @@ public class APIHelper {
 				break;
 			case DELETE:
 				response = HttpHelper.performHttpDelete(url);
+				break;
+			case PUT:
+				response = HttpHelper.performHttpPut(url, content);
 				break;
 			}
 		} finally {
@@ -331,5 +334,14 @@ public class APIHelper {
 		String json = gson.toJson(s);
 
 		return invokeHttpOperation(RequestType.POST, UPDATE_SENSOR, json);
+	}
+	
+	public static String updateDeviceType(DeviceType dt)
+			throws HttpException, IOException {
+		Gson gson = new Gson();
+		String json = gson.toJson(dt);
+		String url = UPDATE_DEVICE_TYPE + "/" + dt.getDeviceTypeName();
+
+		return invokeHttpOperation(RequestType.PUT, url, json);
 	}
 }
