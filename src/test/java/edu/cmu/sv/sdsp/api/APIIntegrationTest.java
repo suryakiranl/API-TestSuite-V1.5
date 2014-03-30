@@ -128,27 +128,57 @@ public class APIIntegrationTest extends BaseTest {
 
 	@Test
 	public void addAndRemoveSensor() {
-		// TODO Not fully implemented
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC3",
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC5",
 					"For Integration Testing");
-			SensorType st = new SensorType("JUnit-Test-ST2",
+			SensorType st6 = new SensorType("JUnit-Test-ST6",
 					sc.getSensorCategoryName());
-			Sensor s = new Sensor("JUnit-Test-Sensor1", st.getSensorTypeName(),
-					"JUnit-Test-Sensor1-URI");
+			SensorType st7 = new SensorType("JUnit-Test-ST7",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(st6.getSensorTypeName());
+			sensorTypeNames.add(st7.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT3", sensorTypeNames);
+			Location l = new Location("JUnit-Test-Location2");
+			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device2", l);
+			Sensor s = new Sensor("JUnit-Test-Sensor1", st6.getSensorTypeName(), d.getUri());
 
 			addSensorCategory(sc);
-			addSensorType(st);
+			addSensorType(st6);
+			addSensorType(st7);
+			addDeviceType(dt);
+			addDevice(d);
 			addSensor(s);
 			
 			// Clean up
 			deleteSensor(s);
-			deleteSensorType(st);
+			deleteDevice(d);
+			deleteDeviceType(dt);
+			deleteSensorType(st7);
+			deleteSensorType(st6);
 			deleteSensorCategory(sc);
 		} catch (IOException e) {
 			log.error(e);
 			Assert.fail();
 		}
+	}
+	
+	private String addSensor(Sensor s) throws HttpException, IOException {
+		String resp = APIHelper.addSensor(s);
+		 Assert.assertTrue(
+		 "Response should contain the word 'Sensor saved'",
+		 resp.contains("Sensor saved"));
+
+		return resp;
+	}
+
+	private String deleteSensor(Sensor s) throws HttpException, IOException {
+		String resp = APIHelper.deleteSensor(s);
+		 Assert.assertTrue(
+		 "Response should contain the word 'Sensor deleted'",
+		 resp.contains("Sensor deleted"));
+
+		return resp;
 	}
 	
 	private String addDevice(Device d) throws HttpException, IOException {
@@ -183,24 +213,6 @@ public class APIIntegrationTest extends BaseTest {
 		 Assert.assertTrue(
 		 "Response should contain the word 'Device type deleted'",
 		 resp.contains("Device type deleted"));
-
-		return resp;
-	}
-	
-	private String addSensor(Sensor s) throws HttpException, IOException {
-		String resp = APIHelper.addSensor(s);
-		// Assert.assertTrue(
-		// "Response should contain the word 'Sensor saved'",
-		// resp.contains("Sensor saved"));
-
-		return resp;
-	}
-
-	private String deleteSensor(Sensor s) throws HttpException, IOException {
-		String resp = APIHelper.deleteSensor(s);
-		 Assert.assertTrue(
-		 "Response should contain the word 'Sensor deleted'",
-		 resp.contains("Sensor deleted"));
 
 		return resp;
 	}
