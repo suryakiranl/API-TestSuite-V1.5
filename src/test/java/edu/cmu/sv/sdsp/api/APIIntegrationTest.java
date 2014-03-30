@@ -330,12 +330,44 @@ public class APIIntegrationTest extends BaseTest {
 	
 	@Test
 	public void getSensorCategory() {
-		SensorCategory sc = new SensorCategory("JUnit-Test-SC1",
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC11",
 				"For Integration Testing");
 		try {
 			addSensorCategory(sc);
 			
 			getSensorCategory(sc, null);
+			
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void getSensorCategoryCSV() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC12",
+				"For Integration Testing");
+		try {
+			addSensorCategory(sc);
+			
+			getSensorCategory(sc, ResultType.CSV);
+			
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void getSensorCategoryJSON() {
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC13",
+				"For Integration Testing");
+		try {
+			addSensorCategory(sc);
+			
+			getSensorCategory(sc, ResultType.JSON);
 			
 			deleteSensorCategory(sc);
 		} catch (IOException e) {
