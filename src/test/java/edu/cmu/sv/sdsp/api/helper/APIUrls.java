@@ -120,4 +120,9 @@ public class APIUrls {
 	 * URI to get "Sensor Type" by name
 	 */
 	public static final String GET_SENSOR_TYPE = HOST_NAME + "/getSensorType";
+	
+	/**
+	 * URI to get "Device Type" by name
+	 */
+	public static final String GET_DEVICE_TYPE = HOST_NAME + "/getDeviceType";
 }

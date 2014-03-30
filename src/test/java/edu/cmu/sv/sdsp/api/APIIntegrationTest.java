@@ -402,9 +402,9 @@ public class APIIntegrationTest extends BaseTest {
 	@Test
 	public void getSensorTypeCSV() {
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC14",
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC15",
 					"For Integration Testing");
-			SensorType st = new SensorType("JUnit-Test-ST15",
+			SensorType st = new SensorType("JUnit-Test-ST16",
 					sc.getSensorCategoryName());
 
 			addSensorCategory(sc);
@@ -425,9 +425,9 @@ public class APIIntegrationTest extends BaseTest {
 	@Test
 	public void getSensorTypeJSON() {
 		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC14",
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC16",
 					"For Integration Testing");
-			SensorType st = new SensorType("JUnit-Test-ST15",
+			SensorType st = new SensorType("JUnit-Test-ST17",
 					sc.getSensorCategoryName());
 
 			addSensorCategory(sc);
@@ -443,6 +443,47 @@ public class APIIntegrationTest extends BaseTest {
 			log.error(e);
 			Assert.fail();
 		}
+	}
+	
+	@Test
+	public void getDeviceType() {
+		try {
+			SensorCategory sc = new SensorCategory("JUnit-Test-SC18",
+					"For Integration Testing");
+			SensorType st1 = new SensorType("JUnit-Test-ST19",
+					sc.getSensorCategoryName());
+			SensorType st2 = new SensorType("JUnit-Test-ST20",
+					sc.getSensorCategoryName());
+			List<String> sensorTypeNames = new ArrayList<String>();
+			sensorTypeNames.add(st1.getSensorTypeName());
+			sensorTypeNames.add(st2.getSensorTypeName());
+			DeviceType dt = new DeviceType("JUnit-Test-DT7", sensorTypeNames);
+
+			addSensorCategory(sc);
+			addSensorType(st1);
+			addSensorType(st2);
+			addDeviceType(dt);
+
+			String resp = getDeviceType(dt, null);
+			assertReponseNotNull(resp);
+			
+			// Clean up
+			deleteDeviceType(dt);
+			deleteSensorType(st2);
+			deleteSensorType(st1);
+			deleteSensorCategory(sc);
+		} catch (IOException e) {
+			log.error(e);
+			Assert.fail();
+		}
+	}
+	
+	private String getDeviceType(DeviceType dt, ResultType type)
+			throws HttpException, IOException {
+		String resp = APIHelper.getDeviceType(dt, null);
+		assertReponseNotNull(resp);
+
+		return resp;
 	}
 	
 	private String getSensorType(SensorType st, ResultType type)
