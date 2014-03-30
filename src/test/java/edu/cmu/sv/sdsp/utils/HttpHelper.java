@@ -7,6 +7,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 /**
@@ -91,6 +92,28 @@ public class HttpHelper {
 			response = delete.getResponseBodyAsString();	
 		} finally {
 			delete.releaseConnection();
+		}
+		
+		logResponse(response);
+		return response;
+	}
+	
+	public static String performHttpPut(String urlStr, String content) throws HttpException, IOException {
+		log.enter(urlStr, content);
+		
+		String response = null;
+		HttpClient client = getHttpClient();
+
+		PutMethod put = new PutMethod(urlStr);
+		StringRequestEntity sre = new StringRequestEntity(content, Constants.CONTENT_TYPE_JSON, Constants.CHARSET_UTF8);
+		put.setRequestEntity(sre);
+		
+		try {
+			int respCode = client.executeMethod(put);
+			log.debug("Response code from server :: " + respCode);
+			response = put.getResponseBodyAsString();
+		} finally {
+			put.releaseConnection();
 		}
 		
 		logResponse(response);
