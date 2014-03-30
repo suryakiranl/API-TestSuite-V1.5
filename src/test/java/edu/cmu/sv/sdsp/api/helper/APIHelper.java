@@ -85,46 +85,39 @@ public class APIHelper extends APIUrls {
 		}
 		log.trace("Response String: " + response);
 	}
-
-	public static String getAllDevices(ResultType type) throws HttpException,
-			IOException {
-		String url = (type == null) ? GET_ALL_DEVICES : GET_ALL_DEVICES + "/"
+	
+	private static String processRequest(String urlPrefix, ResultType type)
+			throws HttpException, IOException {
+		String url = (type == null) ? urlPrefix : urlPrefix + "/"
 				+ type.toString().toLowerCase();
 
 		return invokeHttpOperation(RequestType.GET, url, null);
+	}
+
+	public static String getAllDevices(ResultType type) throws HttpException,
+			IOException {
+		
+		return processRequest(GET_ALL_DEVICES, type);
 	}
 
 	public static String getAllDeviceTypes(ResultType type)
 			throws HttpException, IOException {
-		String url = (type == null) ? GET_ALL_DEVICE_TYPES
-				: GET_ALL_DEVICE_TYPES + "/" + type.toString().toLowerCase();
-
-		return invokeHttpOperation(RequestType.GET, url, null);
+		return processRequest(GET_ALL_DEVICE_TYPES, type);
 	}
 
 	public static String getAllSensorTypes(ResultType type)
 			throws HttpException, IOException {
-		String url = (type == null) ? GET_ALL_SENSOR_TYPES
-				: GET_ALL_SENSOR_TYPES + "/" + type.toString().toLowerCase();
-
-		return invokeHttpOperation(RequestType.GET, url, null);
+		return processRequest(GET_ALL_SENSOR_TYPES, type);
 	}
 
 	public static String getAllSensors(ResultType type) throws HttpException,
 			IOException {
-		String url = (type == null) ? GET_ALL_SENSORS : GET_ALL_SENSORS + "/"
-				+ type.toString().toLowerCase();
-
-		return invokeHttpOperation(RequestType.GET, url, null);
+		return processRequest(GET_ALL_SENSORS, type);
 	}
 
 	public static String getAllSensorCategories(ResultType type)
 			throws HttpException, IOException {
-		String url = (type == null) ? GET_ALL_SENSOR_CATEGORIES
-				: GET_ALL_SENSOR_CATEGORIES + "/"
-						+ type.toString().toLowerCase();
-
-		return invokeHttpOperation(RequestType.GET, url, null);
+		return processRequest(GET_ALL_SENSOR_CATEGORIES, type);
 	}
 
 	public static String addSensorCategory(SensorCategory sc)
@@ -245,19 +238,20 @@ public class APIHelper extends APIUrls {
 
 	public static String getSensorCategory(SensorCategory sc, ResultType type)
 			throws HttpException, IOException {
-		String scPrefix = GET_SENSOR_CATEGORY + "/" + sc.getSensorCategoryName();
-		String url = (type == null) ? scPrefix : scPrefix + "/"
-				+ type.toString().toLowerCase();
-
-		return invokeHttpOperation(RequestType.GET, url, null);
+		String urlPrefix = GET_SENSOR_CATEGORY + "/"
+				+ sc.getSensorCategoryName();
+		return processRequest(urlPrefix, type);
 	}
-	
+
 	public static String getSensorType(SensorType st, ResultType type)
 			throws HttpException, IOException {
-		String stPrefix = GET_SENSOR_TYPE + "/" + st.getSensorTypeName();
-		String url = (type == null) ? stPrefix : stPrefix + "/"
-				+ type.toString().toLowerCase();
+		String urlPrefix = GET_SENSOR_TYPE + "/" + st.getSensorTypeName();
+		return processRequest(urlPrefix, type);
+	}
 
-		return invokeHttpOperation(RequestType.GET, url, null);
+	public static String getDeviceType(DeviceType dt, ResultType type)
+			throws HttpException, IOException {
+		String urlPrefix = GET_DEVICE_TYPE + "/" + dt.getDeviceTypeName();
+		return processRequest(urlPrefix, type);
 	}
 }
