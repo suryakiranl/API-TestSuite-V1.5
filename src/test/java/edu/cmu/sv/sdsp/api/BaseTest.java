@@ -38,7 +38,7 @@ public class BaseTest {
 	 */
 	@Before
 	public void recordStartTimeForTest() {
-		log.debug("====================================================");
+		log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		testStart = new Date();
 		log.debug("Test case started at :: " + testStart.getTime());
 	}
@@ -51,7 +51,8 @@ public class BaseTest {
 		testEnd = new Date();
 		log.debug("Test case completed at :: " + testEnd.getTime());
 		log.debug("Time taken to process this testcase: "
-				+ (testEnd.getTime() - testStart.getTime()) + " ms\n");
+				+ (testEnd.getTime() - testStart.getTime()) + " ms");
+		log.debug("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
 	}
 	
 	/**
