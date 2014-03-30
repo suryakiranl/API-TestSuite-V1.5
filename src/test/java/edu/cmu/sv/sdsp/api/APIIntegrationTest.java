@@ -30,140 +30,161 @@ import edu.cmu.sv.sdsp.utils.Logger;
 public class APIIntegrationTest extends BaseTest {
 	private static final Logger log = Logger.get();
 
+	private void processException(IOException e) {
+		log.error(e);
+		Assert.fail();
+	}
+
 	@Test
 	public void addAndRemoveSensorCategory() {
 		SensorCategory sc = new SensorCategory("JUnit-Test-SC1",
 				"For Integration Testing");
 		try {
 			addSensorCategory(sc);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void addAndRemoveSensorType() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC2",
-					"For Integration Testing");
-			SensorType st = new SensorType("JUnit-Test-ST1",
-					sc.getSensorCategoryName());
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC2",
+				"For Integration Testing");
+		SensorType st = new SensorType("JUnit-Test-ST1",
+				sc.getSensorCategoryName());
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st);
-
-			// Clean up
-			deleteSensorType(st);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			// Clean up
+			try {
+				deleteSensorType(st);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
+
 		}
 	}
 
 	@Test
 	public void addAndRemoveDeviceType() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC3",
-					"For Integration Testing");
-			SensorType st1 = new SensorType("JUnit-Test-ST2",
-					sc.getSensorCategoryName());
-			SensorType st2 = new SensorType("JUnit-Test-ST3",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st1.getSensorTypeName());
-			sensorTypeNames.add(st2.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT1", sensorTypeNames);
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC3",
+				"For Integration Testing");
+		SensorType st1 = new SensorType("JUnit-Test-ST2",
+				sc.getSensorCategoryName());
+		SensorType st2 = new SensorType("JUnit-Test-ST3",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st1.getSensorTypeName());
+		sensorTypeNames.add(st2.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT1", sensorTypeNames);
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st1);
 			addSensorType(st2);
 			addDeviceType(dt);
-
-			// Clean up
-			deleteDeviceType(dt);
-			deleteSensorType(st2);
-			deleteSensorType(st1);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDeviceType(dt);
+				deleteSensorType(st2);
+				deleteSensorType(st1);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void addAndRemoveDevice() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC4",
-					"For Integration Testing");
-			SensorType st4 = new SensorType("JUnit-Test-ST4",
-					sc.getSensorCategoryName());
-			SensorType st5 = new SensorType("JUnit-Test-ST5",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st4.getSensorTypeName());
-			sensorTypeNames.add(st5.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT2", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location1");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device1",
-					l);
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC4",
+				"For Integration Testing");
+		SensorType st4 = new SensorType("JUnit-Test-ST4",
+				sc.getSensorCategoryName());
+		SensorType st5 = new SensorType("JUnit-Test-ST5",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st4.getSensorTypeName());
+		sensorTypeNames.add(st5.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT2", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location1");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device1", l);
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st4);
 			addSensorType(st5);
 			addDeviceType(dt);
 			addDevice(d);
-
-			// Clean up
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(st5);
-			deleteSensorType(st4);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
-			log.error(e);
-			Assert.fail();
+			processException(e);
+		} finally {
+			try {
+				// Clean up
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(st5);
+				deleteSensorType(st4);
+				deleteSensorCategory(sc);
+			} catch (IOException e) {
+				processException(e);
+			}
 		}
 	}
 
 	@Test
 	public void addAndRemoveSensor() {
-		try {
-			SensorCategory sc = new SensorCategory("JUnit-Test-SC5",
-					"For Integration Testing");
-			SensorType st6 = new SensorType("JUnit-Test-ST6",
-					sc.getSensorCategoryName());
-			SensorType st7 = new SensorType("JUnit-Test-ST7",
-					sc.getSensorCategoryName());
-			List<String> sensorTypeNames = new ArrayList<String>();
-			sensorTypeNames.add(st6.getSensorTypeName());
-			sensorTypeNames.add(st7.getSensorTypeName());
-			DeviceType dt = new DeviceType("JUnit-Test-DT3", sensorTypeNames);
-			Location l = new Location("JUnit-Test-Location2");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device2",
-					l);
-			Sensor s = new Sensor("JUnit-Test-Sensor1",
-					st6.getSensorTypeName(), d.getUri());
+		SensorCategory sc = new SensorCategory("JUnit-Test-SC5",
+				"For Integration Testing");
+		SensorType st6 = new SensorType("JUnit-Test-ST6",
+				sc.getSensorCategoryName());
+		SensorType st7 = new SensorType("JUnit-Test-ST7",
+				sc.getSensorCategoryName());
+		List<String> sensorTypeNames = new ArrayList<String>();
+		sensorTypeNames.add(st6.getSensorTypeName());
+		sensorTypeNames.add(st7.getSensorTypeName());
+		DeviceType dt = new DeviceType("JUnit-Test-DT3", sensorTypeNames);
+		Location l = new Location("JUnit-Test-Location2");
+		Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device2", l);
+		Sensor s = new Sensor("JUnit-Test-Sensor1", st6.getSensorTypeName(),
+				d.getUri());
 
+		try {
 			addSensorCategory(sc);
 			addSensorType(st6);
 			addSensorType(st7);
 			addDeviceType(dt);
 			addDevice(d);
 			addSensor(s);
-
-			// Clean up
-			deleteSensor(s);
-			deleteDevice(d);
-			deleteDeviceType(dt);
-			deleteSensorType(st7);
-			deleteSensorType(st6);
-			deleteSensorCategory(sc);
 		} catch (IOException e) {
 			log.error(e);
 			Assert.fail();
+		} finally {
+			try {
+				// Clean up
+				deleteSensor(s);
+				deleteDevice(d);
+				deleteDeviceType(dt);
+				deleteSensorType(st7);
+				deleteSensorType(st6);
+				deleteSensorCategory(sc);
+			} catch(IOException e) {
+				processException(e);
+			}
 		}
 	}
 
@@ -386,7 +407,7 @@ public class APIIntegrationTest extends BaseTest {
 
 			addSensorCategory(sc);
 			addSensorType(st);
-			
+
 			getSensorType(st, null);
 
 			// Clean up
@@ -397,7 +418,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getSensorTypeCSV() {
 		try {
@@ -408,7 +429,7 @@ public class APIIntegrationTest extends BaseTest {
 
 			addSensorCategory(sc);
 			addSensorType(st);
-			
+
 			getSensorType(st, ResultType.CSV);
 
 			// Clean up
@@ -419,7 +440,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getSensorTypeJSON() {
 		try {
@@ -430,7 +451,7 @@ public class APIIntegrationTest extends BaseTest {
 
 			addSensorCategory(sc);
 			addSensorType(st);
-			
+
 			getSensorType(st, ResultType.JSON);
 
 			// Clean up
@@ -441,7 +462,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getDeviceType() {
 		try {
@@ -462,7 +483,7 @@ public class APIIntegrationTest extends BaseTest {
 			addDeviceType(dt);
 
 			getDeviceType(dt, null);
-			
+
 			// Clean up
 			deleteDeviceType(dt);
 			deleteSensorType(st2);
@@ -473,7 +494,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getDeviceTypeCSV() {
 		try {
@@ -494,7 +515,7 @@ public class APIIntegrationTest extends BaseTest {
 			addDeviceType(dt);
 
 			getDeviceType(dt, ResultType.CSV);
-			
+
 			// Clean up
 			deleteDeviceType(dt);
 			deleteSensorType(st2);
@@ -505,7 +526,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getDeviceTypeJSON() {
 		try {
@@ -526,7 +547,7 @@ public class APIIntegrationTest extends BaseTest {
 			addDeviceType(dt);
 
 			getDeviceType(dt, ResultType.CSV);
-			
+
 			// Clean up
 			deleteDeviceType(dt);
 			deleteSensorType(st2);
@@ -537,7 +558,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getDevice() {
 		try {
@@ -560,7 +581,7 @@ public class APIIntegrationTest extends BaseTest {
 			addSensorType(st5);
 			addDeviceType(dt);
 			addDevice(d);
-			
+
 			getDevice(d, null);
 
 			// Clean up
@@ -574,7 +595,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getDeviceCSV() {
 		try {
@@ -597,7 +618,7 @@ public class APIIntegrationTest extends BaseTest {
 			addSensorType(st5);
 			addDeviceType(dt);
 			addDevice(d);
-			
+
 			getDevice(d, ResultType.CSV);
 
 			// Clean up
@@ -611,7 +632,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getDeviceJSON() {
 		try {
@@ -634,7 +655,7 @@ public class APIIntegrationTest extends BaseTest {
 			addSensorType(st5);
 			addDeviceType(dt);
 			addDevice(d);
-			
+
 			getDevice(d, ResultType.JSON);
 
 			// Clean up
@@ -648,7 +669,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getSensor() {
 		try {
@@ -674,7 +695,7 @@ public class APIIntegrationTest extends BaseTest {
 			addDeviceType(dt);
 			addDevice(d);
 			addSensor(s);
-			
+
 			getSensor(s, null);
 
 			// Clean up
@@ -689,7 +710,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getSensorCSV() {
 		try {
@@ -715,7 +736,7 @@ public class APIIntegrationTest extends BaseTest {
 			addDeviceType(dt);
 			addDevice(d);
 			addSensor(s);
-			
+
 			getSensor(s, ResultType.CSV);
 
 			// Clean up
@@ -730,7 +751,7 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getSensorJSON() {
 		try {
@@ -745,8 +766,8 @@ public class APIIntegrationTest extends BaseTest {
 			sensorTypeNames.add(st7.getSensorTypeName());
 			DeviceType dt = new DeviceType("JUnit-Test-DT15", sensorTypeNames);
 			Location l = new Location("JUnit-Test-Location11");
-			Device d = new Device(dt.getDeviceTypeName(), "JUnit-Test-Device10",
-					l);
+			Device d = new Device(dt.getDeviceTypeName(),
+					"JUnit-Test-Device10", l);
 			Sensor s = new Sensor("JUnit-Test-Sensor5",
 					st6.getSensorTypeName(), d.getUri());
 
@@ -756,7 +777,7 @@ public class APIIntegrationTest extends BaseTest {
 			addDeviceType(dt);
 			addDevice(d);
 			addSensor(s);
-			
+
 			getSensor(s, ResultType.JSON);
 
 			// Clean up
@@ -771,23 +792,23 @@ public class APIIntegrationTest extends BaseTest {
 			Assert.fail();
 		}
 	}
-	
-	private String getSensor(Sensor s, ResultType type)
-			throws HttpException, IOException {
+
+	private String getSensor(Sensor s, ResultType type) throws HttpException,
+			IOException {
 		String resp = APIHelper.getSensor(s, type);
 		assertReponseNotNull(resp);
 
 		return resp;
 	}
-	
-	private String getDevice(Device d, ResultType type)
-			throws HttpException, IOException {
+
+	private String getDevice(Device d, ResultType type) throws HttpException,
+			IOException {
 		String resp = APIHelper.getDevice(d, type);
 		assertReponseNotNull(resp);
 
 		return resp;
 	}
-	
+
 	private String getDeviceType(DeviceType dt, ResultType type)
 			throws HttpException, IOException {
 		String resp = APIHelper.getDeviceType(dt, type);
@@ -795,7 +816,7 @@ public class APIIntegrationTest extends BaseTest {
 
 		return resp;
 	}
-	
+
 	private String getSensorType(SensorType st, ResultType type)
 			throws HttpException, IOException {
 		String resp = APIHelper.getSensorType(st, type);
