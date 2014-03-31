@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>edu.cmu.sv</groupId>
   <artifactId>API-TestSuite-V1.5</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>1.5</version>
   <name>API-TestSuite-V1.5</name>
-  <url>http://maven.apache.org</url>
   
   <repositories>
 		<repository>
@@ -24,9 +24,7 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<!-- List all project properties here -->
 	<properties>
-		<!-- To make resources format UTF-8, and be platform independent -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gatling.version>2.0.0-M3a</gatling.version>
 	</properties>
@@ -60,6 +58,7 @@
 			<version>${gatling.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- Apache commons HTTP client for RESTful API -->
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
@@ -74,9 +73,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<!-- Use compilation level of JDK 1.7 -->
-					<source>1.7</source>
-					<target>1.7</target>
+					<!-- Use compilation level of JDK 1.6 -->
+					<source>1.6</source>
+					<target>1.6</target>
 					<showDeprecation>true</showDeprecation>
 					<showWarnings>true</showWarnings>
 				</configuration>
@@ -94,8 +93,19 @@
 							<goal>execute</goal>
 						</goals>
 						<configuration>
+							<!-- Default values -->
+							<!--
+							<configDir>src/test/resources</configDir>
+							<dataFolder>src/test/resources/data</dataFolder>
+							<resultsFolder>target/gatling/results</resultsFolder>
+							<requestBodiesFolder>src/test/resources/request-bodies</requestBodiesFolder>
+							<simulationsFolder>src/test/scala</simulationsFolder>
+							<includes>
+								<include>**/*.scala</include>
+							</includes>
+							-->
 							<excludes>
-								<exclude>unit/*V13.scala</exclude>
+								<exclude>dummy/*.scala</exclude>
 							</excludes>
 						</configuration>
 					</execution>
