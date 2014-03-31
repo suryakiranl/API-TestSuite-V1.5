@@ -43,42 +43,111 @@ class APISimulationV15 extends Simulation {
 
 	// Build up the scenario on which we would like to perform 
 	// Load testing and gauge it's performance.
-	val scn = scenario("Sensor Data Platform Service v1.5")
-		.group("Get Devices v1.5") {
+	// 1. Get All Devices
+	val scn = scenario("Sensor Data Service Platform v1.5")
+		.group("GetAllDevices") {
 			exec(
-				http("Get_Devices_R3")
-					.get("/getAllDevices/json")
+				http("GetAllDevices_R1")
+					.get("/getAllDevices")
 					.headers(headers_1)
 					.check(status.is(200)))
-				.pause(0 milliseconds, 100 milliseconds)
+				.pause(100 milliseconds, 1000 milliseconds)
 				.exec(
-					http("Get_Devices_R4")
+					http("GetAllDevices_R2")
 						.get("/getAllDevices/csv")
 						.headers(headers_1))
+				.pause(100 milliseconds, 1000 milliseconds)
+				.exec(
+					http("GetAllDevices_R3")
+						.get("/getAllDevices/json")
+						.headers(headers_1))
 		}
-	// Pause between the requests for 100 milliseconds.
+	// Pause between the requests for 1000 milliseconds.
 	// And perform another round of testing on different
 	// API methods	
-		.pause(0 milliseconds, 100 milliseconds)
-		.group("Get Sensor Types") {
+	// 2. Get All Sensor Types
+		.pause(100 milliseconds, 1000 milliseconds)
+		.group("GetAllSensorTypes") {
 			exec(
-				http("Get_SensorTypes_R3")
-					.get("/getAllSensorTypes/json")
+				http("GetAllSensorTypes_R1")
+					.get("/getAllSensorTypes")
 					.headers(headers_1)
 					.check(status.is(200)))
-				.pause(0 milliseconds, 100 milliseconds)
+				.pause(100 milliseconds, 1000 milliseconds)
 				.exec(
-					http("Get_SensorTypes_R4")
+					http("GetAllSensorTypes_R2")
 						.get("/getAllSensorTypes/csv")
+						.headers(headers_1))
+				.pause(100 milliseconds, 1000 milliseconds)
+				.exec(
+					http("GetAllSensorTypes_R3")
+						.get("/getAllSensorTypes/json")
+						.headers(headers_1))
+		}
+	// 3. Get All Sensor Categories
+		.pause(100 milliseconds, 1000 milliseconds)
+		.group("GetAllSensorCategories") {
+			exec(
+				http("GetAllSensorCategories_R1")
+					.get("/getAllSensorCategories")
+					.headers(headers_1)
+					.check(status.is(200)))
+				.pause(100 milliseconds, 1000 milliseconds)
+				.exec(
+					http("GetAllSensorCategories_R2")
+						.get("/getAllSensorCategories/csv")
+						.headers(headers_1))
+				.pause(100 milliseconds, 1000 milliseconds)
+				.exec(
+					http("GetAllSensorCategories_R3")
+						.get("/getAllSensorCategories/json")
+						.headers(headers_1))
+		}
+	// 4. Get All Device Types
+		.pause(100 milliseconds, 1000 milliseconds)
+		.group("GetAllDeviceTypes") {
+			exec(
+				http("GetAllDeviceTypes_R1")
+					.get("/getAllDeviceTypes")
+					.headers(headers_1)
+					.check(status.is(200)))
+				.pause(100 milliseconds, 1000 milliseconds)
+				.exec(
+					http("GetAllDeviceTypes_R2")
+						.get("/getAllDeviceTypes/csv")
+						.headers(headers_1))
+				.pause(100 milliseconds, 1000 milliseconds)
+				.exec(
+					http("GetAllDeviceTypes_R3")
+						.get("/getAllDeviceTypes/json")
+						.headers(headers_1))
+		}
+	// 5. Get All Sensors
+		.pause(100 milliseconds, 1000 milliseconds)
+		.group("GetAllSensors") {
+			exec(
+				http("GetAllSensors_R1")
+					.get("/getAllSensors")
+					.headers(headers_1)
+					.check(status.is(200)))
+				.pause(100 milliseconds, 1000 milliseconds)
+				.exec(
+					http("GetAllSensors_R2")
+						.get("/getAllSensors/csv")
+						.headers(headers_1))
+				.pause(100 milliseconds, 1000 milliseconds)
+				.exec(
+					http("GetAllSensors_R3")
+						.get("/getAllSensors/json")
 						.headers(headers_1))
 		}
 		
 	// Setup and execute the scenario that is prepared above.
 	// Run it simulating 100 users accessing the API in 
-	// a time range of 10 seconds. 
-	setUp(scn.inject(ramp(100 users) over (10 seconds)))
+	// a time range of 30 seconds. 
+	setUp(scn.inject(ramp(100 users) over (30 seconds)))
 		.protocols(httpConf_v15)
 		.assertions(
 			global.successfulRequests.percent.is(100),
-			details("Get Devices v1.5" / "Get_Devices_R3").responseTime.max.lessThan(20000))
+			details("GetAllDevices" / "GetAllDevices_R1").responseTime.max.lessThan(20000))
 }
